@@ -1,0 +1,12 @@
+server:
+  hostname: "localhost"
+  enable: True
+  loglevel: "info"
+  auto_register: True
+  enable_matching: False
+  stun_server_host: "stunserver.stunprotocol.org"
+  stun_server_port: 3478
+
+ports:
+  game: 9000
+  admission: 9001

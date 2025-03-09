@@ -1,0 +1,3 @@
+[console_scripts]
+wacky=wacky.cli:main
+
