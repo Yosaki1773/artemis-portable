@@ -1,12 +1,13 @@
+import json
 from typing import Dict, List, Optional
+from sqlalchemy import Table, Column, UniqueConstraint, and_
+from sqlalchemy.types import Integer, String, Boolean, JSON, BigInteger
+from sqlalchemy.schema import ForeignKey
+from sqlalchemy.engine import Row
+from sqlalchemy.sql import select, delete
+from sqlalchemy.dialects.mysql import insert
 
 from core.data.schema import BaseData, metadata
-from sqlalchemy import Column, Table, UniqueConstraint, and_
-from sqlalchemy.dialects.mysql import insert
-from sqlalchemy.engine import Row
-from sqlalchemy.schema import ForeignKey
-from sqlalchemy.sql import select
-from sqlalchemy.types import JSON, BigInteger, Boolean, Integer, String
 
 profile = Table(
     "chuni_profile_data",
@@ -24,6 +25,8 @@ profile = Table(
     Column("frameId", Integer),
     Column("isMaimai", Boolean),
     Column("trophyId", Integer),
+    Column("trophyIdSub1", Integer),
+    Column("trophyIdSub2", Integer),
     Column("userName", String(25)),
     Column("isWebJoin", Boolean),
     Column("playCount", Integer),
@@ -389,6 +392,27 @@ team = Table(
     Column("id", Integer, primary_key=True, nullable=False),
     Column("teamName", String(255)),
     Column("teamPoint", Integer),
+    Column("userTeamPoint", JSON),
+    mysql_charset="utf8mb4",
+)
+
+rating = Table(
+    "chuni_profile_rating",
+    metadata,
+    Column("id", Integer, primary_key=True, nullable=False),
+    Column(
+        "user",
+        ForeignKey("aime_user.id", ondelete="cascade", onupdate="cascade"),
+        nullable=False,
+    ),
+    Column("version", Integer, nullable=False),
+    Column("type", String(255), nullable=False),
+    Column("index", Integer, nullable=False),
+    Column("musicId", Integer),
+    Column("difficultId", Integer),
+    Column("romVersionCode", Integer),
+    Column("score", Integer),
+    UniqueConstraint("user", "version", "type", "index", name="chuni_profile_rating_best_uk"),
     mysql_charset="utf8mb4",
 )
 
@@ -396,7 +420,7 @@ net_battle = Table(
     "chuni_profile_net_battle",
     metadata,
     Column("id", Integer, primary_key=True, nullable=False),
-    Column("user", ForeignKey("aime_user.id", ondelete="cascade", onupdate="cascade")),
+    Column("user", Integer, ForeignKey("aime_user.id", ondelete="cascade", onupdate="cascade"), nullable=False, unique=True),
     Column("isRankUpChallengeFailed", Boolean),
     Column("highestBattleRankId", Integer),
     Column("battleIconId", Integer),
@@ -405,14 +429,69 @@ net_battle = Table(
     mysql_charset="utf8mb4",
 )
 
-
 class ChuniProfileData(BaseData):
     async def update_name(self, user_id: int, new_name: str) -> bool:
-        sql = profile.update(profile.c.user == user_id).values(userName=new_name)
+        sql = profile.update(profile.c.user == user_id).values(
+            userName=new_name
+        )
         result = await self.execute(sql)
 
         if result is None:
             self.logger.warning(f"Failed to set user {user_id} name to {new_name}")
+            return False
+        return True
+
+    async def update_map_icon(self, user_id: int, version: int, new_map_icon: int) -> bool:
+        sql = profile.update((profile.c.user == user_id) & (profile.c.version == version)).values(
+            mapIconId=new_map_icon
+        )
+        result = await self.execute(sql)
+
+        if result is None:
+            self.logger.warning(f"Failed to set user {user_id} map icon")
+            return False
+        return True
+
+    async def update_system_voice(self, user_id: int, version: int, new_system_voice: int) -> bool:
+        sql = profile.update((profile.c.user == user_id) & (profile.c.version == version)).values(
+            voiceId=new_system_voice
+        )
+        result = await self.execute(sql)
+
+        if result is None:
+            self.logger.warning(f"Failed to set user {user_id} system voice")
+            return False
+        return True
+
+    async def update_userbox(self, user_id: int, version: int, new_nameplate: int, new_trophy: int, new_character: int) -> bool:
+        sql = profile.update((profile.c.user == user_id) & (profile.c.version == version)).values(
+            nameplateId=new_nameplate,
+            trophyId=new_trophy,
+            trophyIdSub1=None,
+            trophyIdSub2=None,
+            charaIllustId=new_character
+        )
+        result = await self.execute(sql)
+
+        if result is None:
+            self.logger.warning(f"Failed to set user {user_id} userbox")
+            return False
+        return True
+
+    async def update_avatar(self, user_id: int, version: int, new_wear: int, new_face: int, new_head: int, new_skin: int, new_item: int, new_front: int, new_back: int) -> bool:
+        sql = profile.update((profile.c.user == user_id) & (profile.c.version == version)).values(
+            avatarWear=new_wear,
+            avatarFace=new_face,
+            avatarHead=new_head,
+            avatarSkin=new_skin,
+            avatarItem=new_item,
+            avatarFront=new_front,
+            avatarBack=new_back
+        )
+        result = await self.execute(sql)
+
+        if result is None:
+            self.logger.warning(f"Failed to set user {user_id} avatar")
             return False
         return True
 
@@ -431,9 +510,7 @@ class ChuniProfileData(BaseData):
         result = await self.execute(conflict)
 
         if result is None:
-            self.logger.warning(
-                f"put_profile_data: Failed to update! aime_id: {aime_id}"
-            )
+            self.logger.warning(f"put_profile_data: Failed to update! aime_id: {aime_id}")
             return None
         return result.lastrowid
 
@@ -450,16 +527,12 @@ class ChuniProfileData(BaseData):
         return result.fetchone()
 
     async def get_profile_data(self, aime_id: int, version: int) -> Optional[Row]:
-        sql = (
-            select(profile)
-            .where(
-                and_(
-                    profile.c.user == aime_id,
-                    profile.c.version <= version,
-                )
+        sql = select(profile).where(
+            and_(
+                profile.c.user == aime_id,
+                profile.c.version <= version,
             )
-            .order_by(profile.c.version.desc())
-        )
+        ).order_by(profile.c.version.desc())
 
         result = await self.execute(sql)
         if result is None:
@@ -486,25 +559,19 @@ class ChuniProfileData(BaseData):
         return result.lastrowid
 
     async def get_profile_data_ex(self, aime_id: int, version: int) -> Optional[Row]:
-        sql = (
-            select(profile_ex)
-            .where(
-                and_(
-                    profile_ex.c.user == aime_id,
-                    profile_ex.c.version <= version,
-                )
+        sql = select(profile_ex).where(
+            and_(
+                profile_ex.c.user == aime_id,
+                profile_ex.c.version <= version,
             )
-            .order_by(profile_ex.c.version.desc())
-        )
+        ).order_by(profile_ex.c.version.desc())
 
         result = await self.execute(sql)
         if result is None:
             return None
         return result.fetchone()
 
-    async def put_profile_option(
-        self, aime_id: int, option_data: Dict
-    ) -> Optional[int]:
+    async def put_profile_option(self, aime_id: int, option_data: Dict) -> Optional[int]:
         option_data["user"] = aime_id
 
         sql = insert(option).values(**option_data)
@@ -574,9 +641,7 @@ class ChuniProfileData(BaseData):
             return None
         return result.fetchone()
 
-    async def put_profile_activity(
-        self, aime_id: int, activity_data: Dict
-    ) -> Optional[int]:
+    async def put_profile_activity(self, aime_id: int, activity_data: Dict) -> Optional[int]:
         # The game just uses "id" but we need to distinguish that from the db column "id"
         activity_data["user"] = aime_id
         activity_data["activityId"] = activity_data["id"]
@@ -593,9 +658,7 @@ class ChuniProfileData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_profile_activity(
-        self, aime_id: int, kind: int
-    ) -> Optional[List[Row]]:
+    async def get_profile_activity(self, aime_id: int, kind: int) -> Optional[List[Row]]:
         sql = (
             select(activity)
             .where(and_(activity.c.user == aime_id, activity.c.kind == kind))
@@ -607,9 +670,7 @@ class ChuniProfileData(BaseData):
             return None
         return result.fetchall()
 
-    async def put_profile_charge(
-        self, aime_id: int, charge_data: Dict
-    ) -> Optional[int]:
+    async def put_profile_charge(self, aime_id: int, charge_data: Dict) -> Optional[int]:
         charge_data["user"] = aime_id
 
         sql = insert(charge).values(**charge_data)
@@ -637,9 +698,7 @@ class ChuniProfileData(BaseData):
     async def get_profile_regions(self, aime_id: int) -> Optional[List[Row]]:
         pass
 
-    async def put_profile_emoney(
-        self, aime_id: int, emoney_data: Dict
-    ) -> Optional[int]:
+    async def put_profile_emoney(self, aime_id: int, emoney_data: Dict) -> Optional[int]:
         emoney_data["user"] = aime_id
 
         sql = insert(emoney).values(**emoney_data)
@@ -690,7 +749,9 @@ class ChuniProfileData(BaseData):
     async def get_team_rank(self, team_id: int) -> int:
         # Normal ranking system, likely the one used in the real servers
         # Query all teams sorted by 'teamPoint'
-        result = await self.execute(select(team.c.id).order_by(team.c.teamPoint.desc()))
+        result = await self.execute(
+            select(team.c.id).order_by(team.c.teamPoint.desc())
+        )
 
         # Get the rank of the team with the given team_id
         rank = None
@@ -702,19 +763,45 @@ class ChuniProfileData(BaseData):
         # Return the rank if found, or a default rank otherwise
         return rank if rank is not None else 0
 
-    # RIP scaled team ranking. Gone, but forgotten
-    # def get_team_rank_scaled(self, team_id: int) -> int:
-
-    async def update_team(self, team_id: int, team_data: Dict) -> bool:
+    async def update_team(self, team_id: int, team_data: Dict, user_id: str, user_point_delta: int) -> bool:
+        # Update the team data
         team_data["id"] = team_id
 
+        existing_team = self.get_team_by_id(team_id)
+        if existing_team is None or "userTeamPoint" not in existing_team:
+            self.logger.warn(
+                f"update_team: Failed to update team! team id: {team_id}. Existing team data not found."
+            )
+            return False
+        user_team_point_data = []
+        if existing_team["userTeamPoint"] is not None and existing_team["userTeamPoint"] != "":
+            user_team_point_data = json.loads(existing_team["userTeamPoint"])
+        updated = False
+
+        # Try to find the user in the existing data and update their points
+        for user_point_data in user_team_point_data:
+            if user_point_data["user"] == user_id:
+                user_point_data["userPoint"] = str(int(user_point_delta))
+                updated = True
+                break
+
+        # If the user was not found, add them to the data with the new points
+        if not updated:
+            user_team_point_data.append({"user": user_id, "userPoint": str(user_point_delta)})
+
+        # Update the team's userTeamPoint field in the team data
+        team_data["userTeamPoint"] = json.dumps(user_team_point_data)
+
+        # Update the team in the database
         sql = insert(team).values(**team_data)
         conflict = sql.on_duplicate_key_update(**team_data)
 
         result = await self.execute(conflict)
 
         if result is None:
-            self.logger.warn(f"update_team: Failed to update team! team id: {team_id}")
+            self.logger.warn(
+                f"update_team: Failed to update team! team id: {team_id}"
+            )
             return False
         return True
 
@@ -725,37 +812,94 @@ class ChuniProfileData(BaseData):
         if result is None:
             return None
         return result.fetchone()
-
     async def get_overview(self) -> Dict:
         # Fetch and add up all the playcounts
         playcount_sql = await self.execute(select(profile.c.playCount))
 
         if playcount_sql is None:
-            self.logger.warn(f"get_overview: Couldn't pull playcounts")
+            self.logger.warn(
+                f"get_overview: Couldn't pull playcounts"
+            )
             return 0
 
         total_play_count = 0
         for row in playcount_sql:
             total_play_count += row[0]
-        return {"total_play_count": total_play_count}
-
-    async def get_net_battle(self, aime_id: int) -> Optional[Row]:
-        sql = select(net_battle).where(net_battle.c.user == aime_id)
+        return {
+            "total_play_count": total_play_count
+        }
+    
+    async def put_profile_rating(
+        self,
+        aime_id: int,
+        version: int,
+        rating_type: str,
+        rating_data: List[Dict],
+    ):
+        inserted_values = [
+            {"user": aime_id, "version": version, "type": rating_type, "index": i, **x}
+            for (i, x) in enumerate(rating_data)
+        ]
+        sql = insert(rating).values(inserted_values)
+        update_dict = {x.name: x for x in sql.inserted if x.name != "id"}
+        sql = sql.on_duplicate_key_update(**update_dict)
         result = await self.execute(sql)
 
         if result is None:
+            self.logger.warn(
+                f"put_profile_rating: Could not insert {rating_type}, aime_id: {aime_id}",
+            )
+            return
+        
+        return result.lastrowid
+
+    async def get_profile_rating(self, aime_id: int, version: int) -> Optional[List[Row]]:
+        sql = select(rating).where(and_(
+                rating.c.user == aime_id,
+                rating.c.version <= version,
+            ))
+
+        result = await self.execute(sql)
+        if result is None:
+            self.logger.warning(f"Rating of user {aime_id}, version {version} was None")
             return None
-        return result.fetchone()
+        return result.fetchall()
 
-    async def put_net_battle(
-        self, aime_id: int, net_battle_data: Dict
-    ) -> Optional[int]:
-        net_battle_data["user"] = aime_id
+    async def get_all_profile_versions(self, aime_id: int) -> Optional[List[Row]]:
+        sql = select([profile.c.version]).where(profile.c.user == aime_id)
+        result = await self.execute(sql)
+        if result is None:
+            self.logger.warning(f"user {aime_id}, has no profile")
+            return None
+        else:
+            versions_raw = result.fetchall()
+            versions = [row[0] for row in versions_raw]
+        return sorted(versions, reverse=True)
 
-        sql = insert(net_battle).values(**net_battle_data)
-        conflict = sql.on_duplicate_key_update(**net_battle_data)
+    async def put_net_battle(self, aime_id: int, net_battle_data: Dict) -> Optional[int]:
+        sql = insert(net_battle).values(
+            user=aime_id,
+            isRankUpChallengeFailed=net_battle_data['isRankUpChallengeFailed'],
+            highestBattleRankId=net_battle_data['highestBattleRankId'],
+            battleIconId=net_battle_data['battleIconId'],
+            battleIconNum=net_battle_data['battleIconNum'],
+            avatarEffectPoint=net_battle_data['avatarEffectPoint'],
+        )
+
+        conflict = sql.on_duplicate_key_update(
+            isRankUpChallengeFailed=net_battle_data['isRankUpChallengeFailed'],
+            highestBattleRankId=net_battle_data['highestBattleRankId'],
+            battleIconId=net_battle_data['battleIconId'],
+            battleIconNum=net_battle_data['battleIconNum'],
+            avatarEffectPoint=net_battle_data['avatarEffectPoint'],
+        )
 
         result = await self.execute(conflict)
-        if result is None:
-            return None
-        return result.lastrowid
+        if result:
+            return result.inserted_primary_key['id']
+        self.logger.error(f"Failed to put net battle data for user {aime_id}")
+
+    async def get_net_battle(self, aime_id: int) -> Optional[Row]:
+        result = await self.execute(net_battle.select(net_battle.c.user == aime_id))
+        if result:
+            return result.fetchone()

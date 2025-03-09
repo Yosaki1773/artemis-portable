@@ -1,6 +1,5 @@
 from typing import Dict, List, Optional
 
-from core.data.schema import BaseData, metadata
 from sqlalchemy import Column, Table, UniqueConstraint
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.engine import Row
@@ -8,7 +7,11 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.sql import func, select
 from sqlalchemy.types import Boolean, Integer, String
 
-course = Table(
+from core.data.schema import BaseData, metadata
+
+from ..config import ChuniConfig
+
+course: Table = Table(
     "chuni_score_course",
     metadata,
     Column("id", Integer, primary_key=True, nullable=False),
@@ -39,7 +42,7 @@ course = Table(
     mysql_charset="utf8mb4",
 )
 
-best_score = Table(
+best_score: Table = Table(
     "chuni_score_best",
     metadata,
     Column("id", Integer, primary_key=True, nullable=False),
@@ -136,13 +139,120 @@ playlog = Table(
     Column("regionId", Integer),
     Column("machineType", Integer),
     Column("ticketId", Integer),
-    mysql_charset="utf8mb4",
+    Column("monthPoint", Integer),
+    Column("eventPoint", Integer),
+    mysql_charset="utf8mb4"
 )
 
+class ChuniRomVersion():
+    """
+    Class used to easily compare rom version strings and map back to the internal integer version.
+    Used with methods that touch the playlog table.
+    """
+    Versions = {}
+    def init_versions(cfg: ChuniConfig):
+        if len(ChuniRomVersion.Versions) > 0:
+            # dont bother with reinit
+            return
+
+        # Build up a easily comparible list of versions. Used when deriving romVersion from the playlog
+        all_versions = {
+            10: ChuniRomVersion("1.50.0"),
+            9: ChuniRomVersion("1.45.0"),
+            8: ChuniRomVersion("1.40.0"),
+            7: ChuniRomVersion("1.35.0"),
+            6: ChuniRomVersion("1.30.0"),
+            5: ChuniRomVersion("1.25.0"),
+            4: ChuniRomVersion("1.20.0"),
+            3: ChuniRomVersion("1.15.0"),
+            2: ChuniRomVersion("1.10.0"),
+            1: ChuniRomVersion("1.05.0"),
+            0: ChuniRomVersion("1.00.0")
+        }
+
+        # add the versions from the config
+        for ver in range(11,999):
+            cfg_ver = cfg.version.version(ver)
+            if cfg_ver:
+                all_versions[ver] = ChuniRomVersion(cfg_ver["rom"])
+            else:
+                break
+
+        # sort it by version number for easy iteration
+        ChuniRomVersion.Versions = dict(sorted(all_versions.items()))
+
+    def __init__(self, rom_version: Optional[str] = None) -> None:
+        if rom_version is None:
+            self.major = 0
+            self.minor = 0
+            self.maint = 0
+            self.version = "0.00.00"
+            return
+        
+        (major, minor, maint) = rom_version.split('.')
+        self.major = int(major)
+        self.minor = int(minor)
+        self.maint = int(maint)
+        self.version = rom_version
+
+    def __str__(self) -> str:
+        return self.version
+
+    def __eq__(self, other) -> bool:
+        return (self.major == other.major and 
+                self.minor == other.minor and 
+                self.maint == other.maint)
+
+    def __lt__(self, other) -> bool:
+        return (self.major < other.major) or \
+               (self.major == other.major and self.minor < other.minor) or \
+               (self.major == other.major and self.minor == other.minor and self.maint < other.maint)
+
+    def __gt__(self, other) -> bool:
+        return (self.major > other.major) or \
+               (self.major == other.major and self.minor > other.minor) or \
+               (self.major == other.major and self.minor == other.minor and self.maint > other.maint)
+
+    def get_int_version(self) -> int:
+        """
+        Used when displaying the playlog to walk backwards from the recorded romVersion to our internal version number.
+        This is effectively a workaround to avoid recording our internal version number along with the romVersion in the db at insert time.
+        """
+        for ver,rom in ChuniRomVersion.Versions.items():
+            # if the version matches exactly, great!
+            if self == rom:
+                return ver
+            
+            # If this isnt the last version, use the next as an upper bound
+            if ver + 1 < len(ChuniRomVersion.Versions):
+                if self > rom and self < ChuniRomVersion.Versions[ver + 1]:
+                    # this version fits in the middle! It must be a revision of the version
+                    # e.g. 2.15.00 vs 2.16.00
+                    return ver
+            else:
+                # this is the last version in the list.
+                # If its greate than this one and still the same major, this call it a match
+                if self.major == rom.major and self > rom:
+                    return ver
+
+        # Only way we get here is if it was a version that started with "0." which is def invalid
+        return -1
 
 class ChuniScoreData(BaseData):
-    async def get_courses(self, aime_id: int) -> Optional[Row]:
+    async def get_courses(
+        self,
+        aime_id: int,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+    ) -> Optional[List[Row]]:
         sql = select(course).where(course.c.user == aime_id)
+
+        if limit is not None or offset is not None:
+            sql = sql.order_by(course.c.id)
+        if limit is not None:
+            sql = sql.limit(limit)
+        if offset is not None:
+            sql = sql.offset(offset)
 
         result = await self.execute(sql)
         if result is None:
@@ -161,8 +271,45 @@ class ChuniScoreData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_scores(self, aime_id: int) -> Optional[Row]:
-        sql = select(best_score).where(best_score.c.user == aime_id)
+    async def get_scores(
+        self,
+        aime_id: int,
+        levels: Optional[list[int]] = None,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+    ) -> Optional[List[Row]]:
+        condition = best_score.c.user == aime_id
+
+        if levels is not None:
+            condition &= best_score.c.level.in_(levels)
+
+        if limit is None and offset is None:
+            sql = (
+                select(best_score)
+                .where(condition)
+                .order_by(best_score.c.musicId.asc(), best_score.c.level.asc())
+            )
+        else:
+            subq = (
+                select(best_score.c.musicId)
+                .distinct()
+                .where(condition)
+                .order_by(best_score.c.musicId)
+            )
+
+            if limit is not None:
+                subq = subq.limit(limit)
+            if offset is not None:
+                subq = subq.offset(offset)
+            
+            subq = subq.subquery()
+
+            sql = (
+                select(best_score)
+                .join(subq, best_score.c.musicId == subq.c.musicId)
+                .where(condition)
+                .order_by(best_score.c.musicId, best_score.c.level)
+            )
 
         result = await self.execute(sql)
         if result is None:
@@ -189,73 +336,86 @@ class ChuniScoreData(BaseData):
             return None
         return result.fetchall()
 
-    async def put_playlog(
-        self, aime_id: int, playlog_data: Dict, version: int
-    ) -> Optional[int]:
-        # Calculate the ROM version that should be inserted into the DB, based on the version of the ggame being inserted
-        # We only need from Version 10 (Plost) and back, as newer versions include romVersion in their upsert
-        # This matters both for gameRankings, as well as a future DB update to keep version data separate
-        romVer = {
-            10: "1.50.0",
-            9: "1.45.0",
-            8: "1.40.0",
-            7: "1.35.0",
-            6: "1.30.0",
-            5: "1.25.0",
-            4: "1.20.0",
-            3: "1.15.0",
-            2: "1.10.0",
-            1: "1.05.0",
-            0: "1.00.0",
-        }
+    async def get_playlog_rom_versions_by_int_version(self, version: int, aime_id: int = -1) -> Optional[str]:
+        # Get a set of all romVersion values present
+        sql = select([playlog.c.romVersion])
+        if aime_id != -1:
+            # limit results to a specific user
+            sql = sql.where(playlog.c.user == aime_id)
+        sql = sql.distinct()
 
+        result = await self.execute(sql)
+        if result is None:
+            return None
+        record_versions = result.fetchall()
+
+        # for each romVersion recorded, check if it maps back the current version we are operating on
+        matching_rom_versions = []
+        for v in record_versions:
+            # Do this to prevent null romVersion from causing an error in ChuniRomVersion.__init__()
+            if v[0] is None:
+                continue
+            
+            if ChuniRomVersion(v[0]).get_int_version() == version:
+                matching_rom_versions += [v[0]]
+
+        self.logger.debug(f"romVersions {matching_rom_versions} map to version {version}")
+        return matching_rom_versions
+
+    async def get_playlogs_limited(self, aime_id: int, version: int, index: int, count: int) -> Optional[Row]:
+        # Get a list of all the recorded romVersions in the playlog 
+        # for this user that map to the given version.
+        rom_versions = await self.get_playlog_rom_versions_by_int_version(version, aime_id)
+        if rom_versions is None:
+            return None
+
+        # Query results that have the matching romVersions
+        sql = select(playlog).where((playlog.c.user == aime_id) & (playlog.c.romVersion.in_(rom_versions))).order_by(playlog.c.id.desc()).limit(count).offset(index * count)
+
+        result = await self.execute(sql)
+        if result is None:
+            self.logger.info(f" aime_id {aime_id} has no playlog for version {version}")
+            return None
+        return result.fetchall()
+
+    async def get_user_playlogs_count(self, aime_id: int, version: int) -> Optional[Row]:
+        # Get a list of all the recorded romVersions in the playlog 
+        # for this user that map to the given version.
+        rom_versions = await self.get_playlog_rom_versions_by_int_version(version, aime_id)
+        if rom_versions is None:
+            return None
+
+        # Query results that have the matching romVersions
+        sql = select(func.count()).where((playlog.c.user == aime_id) & (playlog.c.romVersion.in_(rom_versions)))
+
+        result = await self.execute(sql)
+        if result is None:
+            self.logger.info(f" aime_id {aime_id} has no playlog for version {version}")
+            return 0
+        return result.scalar()
+
+    async def put_playlog(self, aime_id: int, playlog_data: Dict, version: int) -> Optional[int]:
         playlog_data["user"] = aime_id
         playlog_data = self.fix_bools(playlog_data)
+        # If the romVersion is not in the data (Version 10 and earlier), look it up from our internal mapping
         if "romVersion" not in playlog_data:
-            playlog_data["romVersion"] = romVer.get(version, "1.00.0")
+            playlog_data["romVersion"] = ChuniRomVersion.Versions[version]
 
         sql = insert(playlog).values(**playlog_data)
-        conflict = sql.on_duplicate_key_update(**playlog_data)
 
-        result = await self.execute(conflict)
+        result = await self.execute(sql)
         if result is None:
             return None
         return result.lastrowid
 
     async def get_rankings(self, version: int) -> Optional[List[Dict]]:
-        # Calculates the ROM version that should be fetched for rankings, based on the game version being retrieved
-        # This prevents tracks that are not accessible in your version from counting towards the 10 results
-        romVer = {
-            13: "2.10%",
-            12: "2.05%",
-            11: "2.00%",
-            10: "1.50%",
-            9: "1.45%",
-            8: "1.40%",
-            7: "1.35%",
-            6: "1.30%",
-            5: "1.25%",
-            4: "1.20%",
-            3: "1.15%",
-            2: "1.10%",
-            1: "1.05%",
-            0: "1.00%",
-        }
-        sql = (
-            select(
-                [
-                    playlog.c.musicId.label("id"),
-                    func.count(playlog.c.musicId).label("point"),
-                ]
-            )
-            .where(
-                (playlog.c.level != 4)
-                & (playlog.c.romVersion.like(romVer.get(version, "%")))
-            )
-            .group_by(playlog.c.musicId)
-            .order_by(func.count(playlog.c.musicId).desc())
-            .limit(10)
-        )
+        # Get a list of all the recorded romVersions in the playlog for the given version
+        rom_versions = await self.get_playlog_rom_versions_by_int_version(version)
+        if rom_versions is None:
+            return None
+
+        # Query results that have the matching romVersions
+        sql = select([playlog.c.musicId.label('id'), func.count(playlog.c.musicId).label('point')]).where((playlog.c.level != 4) & (playlog.c.romVersion.in_(rom_versions))).group_by(playlog.c.musicId).order_by(func.count(playlog.c.musicId).desc()).limit(10)
         result = await self.execute(sql)
 
         if result is None:
@@ -263,11 +423,3 @@ class ChuniScoreData(BaseData):
 
         rows = result.fetchall()
         return [dict(row) for row in rows]
-
-    async def get_rival_music(self, rival_id: int) -> Optional[List[Dict]]:
-        sql = select(best_score).where(best_score.c.user == rival_id)
-
-        result = await self.execute(sql)
-        if result is None:
-            return None
-        return result.fetchall()

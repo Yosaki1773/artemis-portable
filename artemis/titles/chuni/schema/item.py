@@ -354,7 +354,7 @@ class ChuniItemData(BaseData):
     ) -> Optional[List[Row]]:
         sql = favorite.select(
             and_(
-                favorite.c.version == version,
+                # favorite.c.version == version,
                 favorite.c.user == user_id,
                 favorite.c.favKind == fav_kind,
             )

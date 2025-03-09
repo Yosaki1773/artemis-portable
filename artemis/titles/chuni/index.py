@@ -30,6 +30,7 @@ from .crystal import ChuniCrystal
 from .crystalplus import ChuniCrystalPlus
 from .luminous import ChuniLuminous
 from .luminousplus import ChuniLuminousPlus
+from .verse import ChuniVerse
 from .sunplus import ChuniSunPlus
 from .new import ChuniNew
 from .newplus import ChuniNewPlus
@@ -68,7 +69,8 @@ class ChuniServlet(BaseServlet):
             ChuniSun,
             ChuniSunPlus,
             ChuniLuminous,
-            ChuniLuminousPlus
+            ChuniLuminousPlus,
+            ChuniVerse,
         ]
 
         self.logger = logging.getLogger("chuni")
@@ -232,8 +234,10 @@ class ChuniServlet(BaseServlet):
                 internal_ver = ChuniConstants.VER_CHUNITHM_SUN_PLUS
             elif 220 <= version < 225:
                 internal_ver = ChuniConstants.VER_CHUNITHM_LUMINOUS
-            elif version >= 225:  # LUMINOUS
+            elif 225 <= version < 230:
                 internal_ver = ChuniConstants.VER_CHUNITHM_LUMINOUS_PLUS
+            elif version >= 230:  
+                internal_ver = ChuniConstants.VER_CHUNITHM_VERSE
         elif game_code == "SDGS":  # Int
             if version < 110:  # SUPERSTAR
                 internal_ver = (

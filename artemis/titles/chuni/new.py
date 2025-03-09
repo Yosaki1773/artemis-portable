@@ -37,6 +37,8 @@ class ChuniNew(ChuniBase):
             return "220"
         if self.version == ChuniConstants.VER_CHUNITHM_LUMINOUS_PLUS:
             return "225"
+        if self.version == ChuniConstants.VER_CHUNITHM_VERSE:
+            return "230"
 
     async def handle_get_game_setting_api_request(self, data: Dict) -> Dict:
         # use UTC time and convert it to JST time by adding +9
