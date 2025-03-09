@@ -1,0 +1,1259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <dataName>event00200001</dataName>
+  <netOpenName>
+    <id>2201</id>
+    <str>v2_10 00_1</str>
+    <data />
+  </netOpenName>
+  <name>
+    <id>200001</id>
+    <str>WORLD'S END曲開放 A200専用  |WE開放1</str>
+    <data />
+  </name>
+  <text />
+  <ddsBannerName>
+    <id>-1</id>
+    <str>Invalid</str>
+    <data />
+  </ddsBannerName>
+  <periodDispType>1</periodDispType>
+  <alwaysOpen>true</alwaysOpen>
+  <teamOnly>false</teamOnly>
+  <isKop>false</isKop>
+  <priority>0</priority>
+  <substances>
+    <type>3</type>
+    <flag>
+      <value>0</value>
+    </flag>
+    <information>
+      <informationType>0</informationType>
+      <informationDispType>0</informationDispType>
+      <mapFilterID>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </mapFilterID>
+      <courseNames>
+        <list />
+      </courseNames>
+      <text />
+      <image>
+        <path />
+      </image>
+      <movieName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </movieName>
+      <presentNames>
+        <list />
+      </presentNames>
+    </information>
+    <map>
+      <tagText />
+      <mapName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </mapName>
+      <musicNames>
+        <list />
+      </musicNames>
+    </map>
+    <music>
+      <musicType>1</musicType>
+      <musicNames>
+        <list>
+          <StringID>
+            <id>8001</id>
+            <str></str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>8002</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8003</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8004</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8005</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8006</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8007</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8008</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8009</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8010</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8011</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8012</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8015</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8016</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8017</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8018</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8019</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8022</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8023</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8025</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8027</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8029</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8030</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8031</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8032</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8033</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8034</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8035</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8036</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8037</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8038</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8039</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8040</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8041</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8042</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8043</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8044</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8045</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8046</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8047</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8048</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8050</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8052</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8054</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8055</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8056</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8057</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8058</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8059</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8060</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8061</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8062</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8063</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8064</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8065</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8066</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8067</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8068</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8069</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8070</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8071</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8072</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8073</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8074</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8075</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8076</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8077</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8078</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8079</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8080</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8081</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8082</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8083</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8085</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8086</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8087</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8088</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8089</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8092</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8093</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8094</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8095</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8097</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8099</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8100</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8101</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8103</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8104</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8105</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8106</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8107</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8108</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8109</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8111</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8112</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8113</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8114</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8115</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8116</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8118</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8119</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8120</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8125</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8126</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8127</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8128</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8130</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8131</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8132</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8133</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8134</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8137</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8138</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8139</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8140</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8142</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8143</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8144</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8145</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8146</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8147</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8148</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8149</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8150</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8151</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8152</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8153</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8154</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8155</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8156</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8157</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8158</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8160</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8161</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8162</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8163</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8164</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8165</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8166</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8167</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8169</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8170</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8171</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8172</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8173</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8174</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8175</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8176</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8177</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8178</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8179</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8180</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8181</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8182</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8183</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8184</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8186</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8187</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8188</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8189</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8190</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8191</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8192</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8194</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8195</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8196</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8197</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8199</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8200</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8202</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8203</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8204</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8205</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8206</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8207</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8212</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8213</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8214</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8216</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8217</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8218</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8219</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8221</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8222</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8223</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8224</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8225</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8226</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8227</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8228</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8229</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8230</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8231</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8232</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8233</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8234</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8235</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8236</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8237</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8239</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8240</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8241</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8244</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8245</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8246</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8247</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8248</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8249</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8250</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8251</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8253</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8254</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8257</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8259</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8260</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8262</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8266</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8269</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8273</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8274</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8276</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8279</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8281</id>
+            <str />
+            <data />
+          </StringID>
+          <StringID>
+            <id>8282</id>
+            <str />
+            <data />
+          </StringID>
+        </list>
+      </musicNames>
+    </music>
+    <advertiseMovie>
+      <firstMovieName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </firstMovieName>
+      <secondMovieName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </secondMovieName>
+    </advertiseMovie>
+    <recommendMusic>
+      <musicNames>
+        <list />
+      </musicNames>
+    </recommendMusic>
+    <release>
+      <value>0</value>
+    </release>
+    <course>
+      <courseNames>
+        <list />
+      </courseNames>
+    </course>
+    <quest>
+      <questNames>
+        <list />
+      </questNames>
+    </quest>
+    <duel>
+      <duelName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </duelName>
+    </duel>
+    <changeSurfBoardUI>
+      <value>0</value>
+    </changeSurfBoardUI>
+    <avatarAccessoryGacha>
+      <avatarAccessoryGachaName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </avatarAccessoryGachaName>
+    </avatarAccessoryGacha>
+    <rightsInfo>
+      <rightsNames>
+        <list />
+      </rightsNames>
+    </rightsInfo>
+    <battleReward>
+      <battleRewardName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </battleRewardName>
+    </battleReward>
+    <dailyBonusPreset>
+      <dailyBonusPresetName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </dailyBonusPresetName>
+    </dailyBonusPreset>
+  </substances>
+</EventData>

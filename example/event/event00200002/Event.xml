@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <dataName>event00200002</dataName>
+  <netOpenName>
+    <id>2501</id>
+    <str>v2_25 00_1</str>
+    <data />
+  </netOpenName>
+  <name>
+    <id>200002</id>
+    <str>【Ver2.25】ULT曲開放 [当日配信]  |ULT開放1</str>
+    <data />
+  </name>
+  <text />
+  <ddsBannerName>
+    <id>-1</id>
+    <str>Invalid</str>
+    <data />
+  </ddsBannerName>
+  <periodDispType>1</periodDispType>
+  <alwaysOpen>true</alwaysOpen>
+  <teamOnly>false</teamOnly>
+  <isKop>false</isKop>
+  <priority>0</priority>
+  <substances>
+    <type>3</type>
+    <flag>
+      <value>0</value>
+    </flag>
+    <information>
+      <informationType>0</informationType>
+      <informationDispType>0</informationDispType>
+      <mapFilterID>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </mapFilterID>
+      <courseNames>
+        <list />
+      </courseNames>
+      <text />
+      <image>
+        <path />
+      </image>
+      <movieName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </movieName>
+      <presentNames>
+        <list />
+      </presentNames>
+    </information>
+    <map>
+      <tagText />
+      <mapName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </mapName>
+      <musicNames>
+        <list />
+      </musicNames>
+    </map>
+    <music>
+      <musicType>2</musicType>
+      <musicNames>
+        <list>
+          <StringID>
+            <id>35</id>
+            <str>Lapis</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>455</id>
+            <str>Vampire</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>720</id>
+            <str>ロキ</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>210</id>
+            <str>アスノヨゾラ哨戒班</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>333</id>
+            <str>Oshama Scramble!</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>100</id>
+            <str>After the rain</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>99</id>
+            <str>言ノ葉カルマ</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>173</id>
+            <str>Halcyon</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>574</id>
+            <str>ネ！コ！</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>37</id>
+            <str>鳥の詩</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>244</id>
+            <str>回レ！雪月花</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>159</id>
+            <str>ジングルベル</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>840</id>
+            <str>幾望の月</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>818</id>
+            <str>ヒバナ</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>166</id>
+            <str>裏表ラバーズ</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>168</id>
+            <str>ネトゲ廃人シュプレヒコール</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>167</id>
+            <str>脳漿炸裂ガール</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>132</id>
+            <str>イカサマライフゲイム</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>47</id>
+            <str>六兆年と一夜物語</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>38</id>
+            <str>天ノ弱</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>113</id>
+            <str>ストリーミングハート</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>143</id>
+            <str>ODDS&amp;ENDS</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>18</id>
+            <str>千本桜</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>118</id>
+            <str>腐れ外道とチョコレゐト</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>83</id>
+            <str>ロストワンの号哭</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>819</id>
+            <str>最終鬼畜妹フランドール・S</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>462</id>
+            <str>物凄い勢いでけーねが物凄いうた</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>20</id>
+            <str>taboo tears you up</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>187</id>
+            <str>患部で止まってすぐ溶ける～狂気の優曇華院</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>98</id>
+            <str>魔理沙は大変なものを盗んでいきました</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>48</id>
+            <str>Unlimited Spark!</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>203</id>
+            <str>FLOWER</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>204</id>
+            <str>ちくわパフェだよ☆CKP</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>232</id>
+            <str>Elemental Creation</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>233</id>
+            <str>アルストロメリア</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>306</id>
+            <str>凛として咲く花の如く</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>385</id>
+            <str>Evans</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>89</id>
+            <str>JET</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>298</id>
+            <str>PRIVATE SERVICE</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>807</id>
+            <str>BlythE</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>887</id>
+            <str>SON OF SUN</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>45</id>
+            <str>L9</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>3</id>
+            <str>B.B.K.K.B.K.K.</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>169</id>
+            <str>elegante</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>317</id>
+            <str>Air</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>323</id>
+            <str>Dreadnought</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>428</id>
+            <str>Aleph-0</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>6</id>
+            <str>Reach For The Stars</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>330</id>
+            <str>ドキドキDREAM!!!</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>2416</id>
+            <str>Snow Colored Score</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>150</id>
+            <str>brilliant better</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>331</id>
+            <str>猛進ソリストライフ！</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>148</id>
+            <str>Theme of SeelischTact</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>71</id>
+            <str>Infantoon Fantasy</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>75</id>
+            <str>Counselor</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>140</id>
+            <str>Guilty</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>163</id>
+            <str>幾四音-Ixion-</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>65</id>
+            <str>Anemone</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>74</id>
+            <str>リリーシア</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>95</id>
+            <str>砂漠のハンティングガール♡</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>67</id>
+            <str>昵懇レファレンス</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>107</id>
+            <str>We Gonna Journey</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>63</id>
+            <str>Gate of Fate</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>152</id>
+            <str>Gustav Battle</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>343</id>
+            <str>Daydream café</str>
+            <data />
+          </StringID>
+          <StringID>
+            <id>417</id>
+            <str>Redo</str>
+            <data />
+          </StringID>
+        </list>
+      </musicNames>
+    </music>
+    <advertiseMovie>
+      <firstMovieName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </firstMovieName>
+      <secondMovieName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </secondMovieName>
+    </advertiseMovie>
+    <recommendMusic>
+      <musicNames>
+        <list />
+      </musicNames>
+    </recommendMusic>
+    <release>
+      <value>0</value>
+    </release>
+    <course>
+      <courseNames>
+        <list />
+      </courseNames>
+    </course>
+    <quest>
+      <questNames>
+        <list />
+      </questNames>
+    </quest>
+    <duel>
+      <duelName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </duelName>
+    </duel>
+    <cmission>
+      <cmissionName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </cmissionName>
+    </cmission>
+    <changeSurfBoardUI>
+      <value>0</value>
+    </changeSurfBoardUI>
+    <avatarAccessoryGacha>
+      <avatarAccessoryGachaName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </avatarAccessoryGachaName>
+    </avatarAccessoryGacha>
+    <rightsInfo>
+      <rightsNames>
+        <list />
+      </rightsNames>
+    </rightsInfo>
+    <playRewardSet>
+      <playRewardSetName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </playRewardSetName>
+    </playRewardSet>
+    <dailyBonusPreset>
+      <dailyBonusPresetName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </dailyBonusPresetName>
+    </dailyBonusPreset>
+    <matchingBonus>
+      <timeTableName>
+        <id>-1</id>
+        <str>Invalid</str>
+        <data />
+      </timeTableName>
+    </matchingBonus>
+  </substances>
+</EventData>
