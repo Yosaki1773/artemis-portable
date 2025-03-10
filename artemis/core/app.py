@@ -14,7 +14,7 @@ from core import (
     AllnetServlet,
     BillingServlet,
     CoreConfig,
-    MuchaServlet,
+    # MuchaServlet,
     TitleServlet,
 )
 from core.frontend import FrontendServlet
@@ -60,13 +60,13 @@ logger.info(
 )
 
 title = TitleServlet(cfg, cfg_dir)  # This has to be loaded first to load plugins
-mucha = MuchaServlet(cfg, cfg_dir)
+# mucha = MuchaServlet(cfg, cfg_dir)
 
 route_lst: List[Route] = [
     # Mucha
-    Route("/mucha_front/boardauth.do", mucha.handle_boardauth, methods=["POST"]),
-    Route("/mucha_front/updatacheck.do", mucha.handle_updatecheck, methods=["POST"]),
-    Route("/mucha_front/downloadstate.do", mucha.handle_dlstate, methods=["POST"]),
+    # Route("/mucha_front/boardauth.do", mucha.handle_boardauth, methods=["POST"]),
+    # Route("/mucha_front/updatacheck.do", mucha.handle_updatecheck, methods=["POST"]),
+    # Route("/mucha_front/downloadstate.do", mucha.handle_dlstate, methods=["POST"]),
     # General
     Route("/", dummy_rt),
     Route("/robots.txt", FrontendServlet.robots),
