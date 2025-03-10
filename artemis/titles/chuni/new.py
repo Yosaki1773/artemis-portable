@@ -98,7 +98,7 @@ class ChuniNew(ChuniBase):
             )
             else ""
         )
-        user_version = self.data.profile.get_profile_data(1, self.version)
+        user_version = await self.data.profile.get_profile_data(1, self.version)
         if user_version:
             version = {
                 "rom": user_version["lastRomVersion"],
