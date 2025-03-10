@@ -98,8 +98,16 @@ class ChuniNew(ChuniBase):
             )
             else ""
         )
-        version = self.game_cfg.version.version(self.version)
+        user_version = self.data.profile.get_profile_data(1, self.version)
+        if user_version:
+            version = {
+                "rom": user_version["lastRomVersion"],
+                "data": user_version["lastDataVersion"],
+            }
+        else:
+            version = self.game_cfg.version.version(self.version)
 
+        self.logger.info(f"{version}")
         return {
             "gameSetting": {
                 "isMaintenance": False,
@@ -137,7 +145,9 @@ class ChuniNew(ChuniBase):
 
     async def handle_get_user_map_area_api_request(self, data: Dict) -> Dict:
         map_area_ids = [int(area["mapAreaId"]) for area in data["mapAreaIdList"]]
-        user_map_areas = await self.data.item.get_map_areas(data["userId"], map_area_ids)
+        user_map_areas = await self.data.item.get_map_areas(
+            data["userId"], map_area_ids
+        )
 
         map_areas = []
         for map_area in user_map_areas:
