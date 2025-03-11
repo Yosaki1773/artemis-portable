@@ -1,4 +1,4 @@
 @echo off
-cd "D:\servers\artemis-portable-luminous\mariadb\bin"
+cd mariadb/bin
 mysqld --console
 pause
