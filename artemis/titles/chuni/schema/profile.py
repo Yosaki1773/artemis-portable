@@ -25,6 +25,8 @@ profile = Table(
     Column("frameId", Integer),
     Column("isMaimai", Boolean),
     Column("trophyId", Integer),
+    Column("trophyIdSub1", Integer),
+    Column("trophyIdSub2", Integer),
     Column("userName", String(25)),
     Column("isWebJoin", Boolean),
     Column("playCount", Integer),
@@ -465,6 +467,8 @@ class ChuniProfileData(BaseData):
         sql = profile.update((profile.c.user == user_id) & (profile.c.version == version)).values(
             nameplateId=new_nameplate,
             trophyId=new_trophy,
+            trophyIdSub1=None,
+            trophyIdSub2=None,
             charaIllustId=new_character
         )
         result = await self.execute(sql)

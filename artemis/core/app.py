@@ -9,7 +9,7 @@ from starlette.responses import PlainTextResponse
 from os import environ, path, mkdir, W_OK, access
 from typing import List
 
-from core import CoreConfig, TitleServlet, MuchaServlet
+from core import CoreConfig, TitleServlet
 from core.allnet import AllnetServlet, BillingServlet
 from core.frontend import FrontendServlet
 
@@ -52,13 +52,13 @@ coloredlogs.install(level=log_lv, logger=logger, fmt=log_fmt_str)
 logger.info(f"Artemis starting in {'develop' if cfg.server.is_develop else 'production'} mode")
 
 title = TitleServlet(cfg, cfg_dir) # This has to be loaded first to load plugins
-mucha = MuchaServlet(cfg, cfg_dir)
+# mucha = MuchaServlet(cfg, cfg_dir)
 
 route_lst: List[Route] = [
     # Mucha
-    Route("/mucha_front/boardauth.do", mucha.handle_boardauth, methods=["POST"]),
-    Route("/mucha_front/updatacheck.do", mucha.handle_updatecheck, methods=["POST"]),
-    Route("/mucha_front/downloadstate.do", mucha.handle_dlstate, methods=["POST"]),
+    # Route("/mucha_front/boardauth.do", mucha.handle_boardauth, methods=["POST"]),
+    # Route("/mucha_front/updatacheck.do", mucha.handle_updatecheck, methods=["POST"]),
+    # Route("/mucha_front/downloadstate.do", mucha.handle_dlstate, methods=["POST"]),
     # General
     Route("/", dummy_rt),
     Route("/robots.txt", FrontendServlet.robots)

@@ -37,6 +37,7 @@ from .sun import ChuniSun
 from .sunplus import ChuniSunPlus
 from .luminous import ChuniLuminous
 from .luminousplus import ChuniLuminousPlus
+from .verse import ChuniVerse
 
 class ChuniServlet(BaseServlet):
     def __init__(self, core_cfg: CoreConfig, cfg_dir: str) -> None:
@@ -66,6 +67,7 @@ class ChuniServlet(BaseServlet):
             ChuniSunPlus,
             ChuniLuminous,
             ChuniLuminousPlus,
+            ChuniVerse,
         ]
 
         self.logger = logging.getLogger("chuni")
@@ -110,6 +112,7 @@ class ChuniServlet(BaseServlet):
             ChuniConstants.VER_CHUNITHM_LUMINOUS: 8,
             f"{ChuniConstants.VER_CHUNITHM_LUMINOUS}_int": 8,
             ChuniConstants.VER_CHUNITHM_LUMINOUS_PLUS: 56,
+            ChuniConstants.VER_CHUNITHM_VERSE: 44,
         }
 
         for version, keys in self.game_cfg.crypto.keys.items():
@@ -240,8 +243,10 @@ class ChuniServlet(BaseServlet):
               internal_ver = ChuniConstants.VER_CHUNITHM_SUN_PLUS
           elif version >= 220 and version < 225:  # LUMINOUS
               internal_ver = ChuniConstants.VER_CHUNITHM_LUMINOUS
-          elif version >= 225:  # LUMINOUS PLUS
+          elif version >= 225 and version < 230:
               internal_ver = ChuniConstants.VER_CHUNITHM_LUMINOUS_PLUS
+          elif version >= 230:  
+              internal_ver = ChuniConstants.VER_CHUNITHM_VERSE
         elif game_code == "SDGS": # Int
           if version < 105: # SUPERSTAR
               internal_ver = ChuniConstants.VER_CHUNITHM_CRYSTAL_PLUS

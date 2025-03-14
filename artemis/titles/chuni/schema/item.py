@@ -479,7 +479,7 @@ class ChuniItemData(BaseData):
 
     async def put_character(self, user_id: int, character_data: Dict) -> Optional[int]:
         character_data["user"] = user_id
-
+        character_data["exMaxLv"] = 200
         character_data = self.fix_bools(character_data)
 
         sql = insert(character).values(**character_data)

@@ -1,3 +1,4 @@
+from operator import or_
 from typing import Dict, List, Optional
 from sqlalchemy import (
     ForeignKeyConstraint,
@@ -408,9 +409,9 @@ class ChuniStaticData(BaseData):
 
     async def get_enabled_events(self, version: int) -> Optional[List[Row]]:
         sql = select(events).where(
-            and_(events.c.version == version, events.c.enabled == True)
+            and_(events.c.version == version, events.c.enabled == True,or_(events.c.type == 3,events.c.type == 6))
         )
-
+       
         result = await self.execute(sql)
         if result is None:
             return None

@@ -4,10 +4,10 @@ server:
   news_msg: ""
 
 team:
-  name: ARTEMiS # If this is set, all players that are not on a team will use this one by default.
+  name: 《覚悟》 ～ Requiem of my Soul # If this is set, all players that are not on a team will use this one by default.
 
 mods:
-  use_login_bonus: True
+  use_login_bonus: false
   # stock_tickets allows specified ticket IDs to be auto-stocked at login. Format is a comma-delimited string of ticket IDs
   # note: quanity is not refreshed on "continue" after set - only on subsequent login
   stock_tickets: 
@@ -23,7 +23,7 @@ mods:
     nameplates: False
     trophies: False
     character_icons: False
-      
+
 version:
   11:
     rom: 2.00.00
@@ -39,10 +39,13 @@ version:
     data: 2.15.00
   15:
     rom: 2.20.00
-    data: 2.20.00
+    data: 2.20.07
   16:
     rom: 2.25.00
-    data: 2.25.00
+    data: 2.25.07
+  17:
+    rom: 2.30.00
+    data: 2.30.00
 
 crypto:
   encrypted_only: False

@@ -4,7 +4,6 @@ from random import randint
 from typing import Dict
 
 import pytz
-
 from core.config import CoreConfig
 from core.utils import Utils
 from titles.chuni.base import ChuniBase
@@ -24,7 +23,7 @@ class ChuniNew(ChuniBase):
         self.logger = logging.getLogger("chuni")
         self.game = ChuniConstants.GAME_CODE
         self.version = ChuniConstants.VER_CHUNITHM_NEW
-    
+
     def _interal_ver_to_intver(self) -> str:
         if self.version == ChuniConstants.VER_CHUNITHM_NEW:
             return "200"
@@ -38,6 +37,8 @@ class ChuniNew(ChuniBase):
             return "220"
         if self.version == ChuniConstants.VER_CHUNITHM_LUMINOUS_PLUS:
             return "225"
+        if self.version == ChuniConstants.VER_CHUNITHM_VERSE:
+            return "230"
 
     async def handle_get_game_setting_api_request(self, data: Dict) -> Dict:
         # use UTC time and convert it to JST time by adding +9
@@ -49,7 +50,10 @@ class ChuniNew(ChuniBase):
             datetime.utcnow() + timedelta(hours=16), self.date_time_format
         )
         # if reboot start/end time is not defined use the default behavior of being a few hours ago
-        if self.core_cfg.title.reboot_start_time == "" or self.core_cfg.title.reboot_end_time == "":
+        if (
+            self.core_cfg.title.reboot_start_time == ""
+            or self.core_cfg.title.reboot_end_time == ""
+        ):
             reboot_start = datetime.strftime(
                 datetime.utcnow() + timedelta(hours=6), self.date_time_format
             )
@@ -58,20 +62,52 @@ class ChuniNew(ChuniBase):
             )
         else:
             # get current datetime in JST
-            current_jst = datetime.now(pytz.timezone('Asia/Tokyo')).date()
+            current_jst = datetime.now(pytz.timezone("Asia/Tokyo")).date()
 
             # parse config start/end times into datetime
-            reboot_start_time = datetime.strptime(self.core_cfg.title.reboot_start_time, "%H:%M")
-            reboot_end_time = datetime.strptime(self.core_cfg.title.reboot_end_time, "%H:%M")
+            reboot_start_time = datetime.strptime(
+                self.core_cfg.title.reboot_start_time, "%H:%M"
+            )
+            reboot_end_time = datetime.strptime(
+                self.core_cfg.title.reboot_end_time, "%H:%M"
+            )
 
             # offset datetimes with current date/time
-            reboot_start_time = reboot_start_time.replace(year=current_jst.year, month=current_jst.month, day=current_jst.day, tzinfo=pytz.timezone('Asia/Tokyo'))
-            reboot_end_time = reboot_end_time.replace(year=current_jst.year, month=current_jst.month, day=current_jst.day, tzinfo=pytz.timezone('Asia/Tokyo'))
+            reboot_start_time = reboot_start_time.replace(
+                year=current_jst.year,
+                month=current_jst.month,
+                day=current_jst.day,
+                tzinfo=pytz.timezone("Asia/Tokyo"),
+            )
+            reboot_end_time = reboot_end_time.replace(
+                year=current_jst.year,
+                month=current_jst.month,
+                day=current_jst.day,
+                tzinfo=pytz.timezone("Asia/Tokyo"),
+            )
 
             # create strings for use in gameSetting
             reboot_start = reboot_start_time.strftime(self.date_time_format)
             reboot_end = reboot_end_time.strftime(self.date_time_format)
-        t_port = Utils.get_title_port(self.core_cfg)
+
+        t_port = (
+            f":{self.core_cfg.server.port}"
+            if (
+                not self.core_cfg.server.is_using_proxy
+                and Utils.get_title_port(self.core_cfg) != 80
+            )
+            else ""
+        )
+        user_version = await self.data.profile.get_profile_data(1, self.version)
+        if user_version:
+            version = {
+                "rom": user_version["lastRomVersion"],
+                "data": user_version["lastDataVersion"],
+            }
+        else:
+            version = self.game_cfg.version.version(self.version)
+
+        self.logger.info(f"{version}")
         return {
             "gameSetting": {
                 "isMaintenance": False,
@@ -86,13 +122,13 @@ class ChuniNew(ChuniBase):
                 "matchEndTime": match_end,
                 "matchTimeLimit": self.game_cfg.matching.match_time_limit,
                 "matchErrorLimit": self.game_cfg.matching.match_error_limit,
-                "romVersion": self.game_cfg.version.version(self.version)["rom"],
-                "dataVersion": self.game_cfg.version.version(self.version)["data"],
-                "matchingUri": f"http://{self.core_cfg.server.hostname}:{t_port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
-                "matchingUriX": f"http://{self.core_cfg.server.hostname}:{t_port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
+                "romVersion": version["rom"],
+                "dataVersion": version["data"],
+                "matchingUri": f"http://{self.core_cfg.server.hostname}{t_port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
+                "matchingUriX": f"http://{self.core_cfg.server.hostname}{t_port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
                 # might be really important for online battle to connect the cabs via UDP port 50201
-                "udpHolePunchUri": f"http://{self.core_cfg.server.hostname}:{self.core_cfg.server.port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
-                "reflectorUri": f"http://{self.core_cfg.server.hostname}:{self.core_cfg.server.port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
+                "udpHolePunchUri": f"http://{self.core_cfg.server.hostname}{t_port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
+                "reflectorUri": f"http://{self.core_cfg.server.hostname}{t_port}/SDHD/{self._interal_ver_to_intver()}/ChuniServlet/",
             },
             "isDumpUpload": False,
             "isAou": False,
@@ -109,7 +145,9 @@ class ChuniNew(ChuniBase):
 
     async def handle_get_user_map_area_api_request(self, data: Dict) -> Dict:
         map_area_ids = [int(area["mapAreaId"]) for area in data["mapAreaIdList"]]
-        user_map_areas = await self.data.item.get_map_areas(data["userId"], map_area_ids)
+        user_map_areas = await self.data.item.get_map_areas(
+            data["userId"], map_area_ids
+        )
 
         map_areas = []
         for map_area in user_map_areas:
@@ -124,7 +162,9 @@ class ChuniNew(ChuniBase):
         return {"userId": data["userId"], "symbolCharInfoList": []}
 
     async def handle_get_user_preview_api_request(self, data: Dict) -> Dict:
-        profile = await self.data.profile.get_profile_preview(data["userId"], self.version)
+        profile = await self.data.profile.get_profile_preview(
+            data["userId"], self.version
+        )
         if profile is None:
             return None
         profile_character = await self.data.item.get_character(
@@ -289,37 +329,35 @@ class ChuniNew(ChuniBase):
         }
 
     async def handle_get_user_printed_card_api_request(self, data: Dict) -> Dict:
-        user_id = int(data["userId"])
-        next_idx = int(data["nextIndex"])
-        max_ct = int(data["maxCount"])
-
-        rows = await self.data.item.get_user_print_states(
-            user_id,
-            has_completed=True,
-            limit=max_ct + 1,
-            offset=next_idx,
+        user_print_list = await self.data.item.get_user_print_states(
+            data["userId"], has_completed=True
         )
-        if rows is None or len(rows) == 0:
+        if user_print_list is None:
             return {
-                "userId": user_id,
+                "userId": data["userId"],
                 "length": 0,
                 "nextIndex": -1,
                 "userPrintedCardList": [],
             }
 
         print_list = []
+        next_idx = int(data["nextIndex"])
+        max_ct = int(data["maxCount"])
 
-        for row in rows[:max_ct]:
-            tmp = row._asdict()
+        for x in range(next_idx, len(user_print_list)):
+            tmp = user_print_list[x]._asdict()
             print_list.append(tmp["cardId"])
 
-        if len(rows) > max_ct:
-            next_idx += max_ct
+            if len(print_list) >= max_ct:
+                break
+
+        if len(print_list) >= max_ct:
+            next_idx = next_idx + max_ct
         else:
             next_idx = -1
 
         return {
-            "userId": user_id,
+            "userId": data["userId"],
             "length": len(print_list),
             "nextIndex": next_idx,
             "userPrintedCardList": print_list,
@@ -371,7 +409,9 @@ class ChuniNew(ChuniBase):
         # characterId should be returned
         if chara_id != -1:
             # get the
-            card = await self.data.static.get_gacha_card_by_character(gacha_id, chara_id)
+            card = await self.data.static.get_gacha_card_by_character(
+                gacha_id, chara_id
+            )
 
             tmp = card._asdict()
             tmp.pop("id")
@@ -474,7 +514,9 @@ class ChuniNew(ChuniBase):
         )
 
         # add the entry to the user print table with the random serialId
-        await self.data.item.put_user_print_detail(user_id, serial_id, user_print_detail)
+        await self.data.item.put_user_print_detail(
+            user_id, serial_id, user_print_detail
+        )
 
         return {
             "returnCode": 1,
@@ -483,7 +525,9 @@ class ChuniNew(ChuniBase):
             "apiName": "CMUpsertUserPrintApi",
         }
 
-    async def handle_cm_upsert_user_print_subtract_api_request(self, data: Dict) -> Dict:
+    async def handle_cm_upsert_user_print_subtract_api_request(
+        self, data: Dict
+    ) -> Dict:
         upsert = data["userCardPrintState"]
         user_id = data["userId"]
         place_id = data["placeId"]
@@ -506,7 +550,9 @@ class ChuniNew(ChuniBase):
 
         # set the card print state to success and use the orderId as the key
         for order_id in order_ids:
-            await self.data.item.put_user_print_state(user_id, id=order_id, hasCompleted=True)
+            await self.data.item.put_user_print_state(
+                user_id, id=order_id, hasCompleted=True
+            )
 
         return {"returnCode": "1", "apiName": "CMUpsertUserPrintCancelApi"}
 
@@ -667,7 +713,4 @@ class ChuniNew(ChuniBase):
             "matchingMemberInfoList": [current_member] + diff_members,
         }
 
-        return {
-            "roomId": data["roomId"],
-            "matchingWaitState": matching_wait
-        }
+        return {"roomId": data["roomId"], "matchingWaitState": matching_wait}

@@ -48,15 +48,19 @@ async def launch_billing(cfg: CoreConfig) -> None:
     await server.serve()
 
 async def launch_frontend(cfg: CoreConfig) -> None:
-    server_cfg = uvicorn.Config(
-        "core.frontend:app", 
-        host=cfg.server.listen_address, 
-        port=cfg.frontend.port, 
-        reload=cfg.server.is_develop,
-        log_level="info" if cfg.server.is_develop else "critical",
-    )
-    server = uvicorn.Server(server_cfg)
-    await server.serve()
+    process=await asyncio.create_subprocess_shell( f"npm start",cwd=cfg.frontend.path,stdout=asyncio.subprocess.PIPE,
+    stderr=asyncio.subprocess.PIPE,)
+    try:
+        while True:
+            output = await process.stdout.readline()
+            if output:
+                print(output.decode().strip())
+            
+            if process.returncode is not None:
+                break
+    except asyncio.CancelledError:
+        process.terminate()
+
 
 async def launch_allnet(cfg: CoreConfig) -> None:
     server_cfg = uvicorn.Config(

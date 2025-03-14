@@ -330,12 +330,19 @@ class FrontendConfig:
                 self.__config, "core", "frontend", "loglevel", default="info"
             )
         )
-    
+
     @property
     def secret(self) -> str:
         return CoreConfig.get_config_field(
             self.__config, "core", "frontend", "secret", default=""
         )
+
+    @property
+    def path(self) -> str:
+        return CoreConfig.get_config_field(
+            self.__config, "core", "frontend", "path", default=""
+        )
+
 
 class AllnetConfig:
     def __init__(self, parent_config: "CoreConfig") -> None:

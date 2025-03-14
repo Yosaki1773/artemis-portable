@@ -139,6 +139,8 @@ playlog = Table(
     Column("regionId", Integer),
     Column("machineType", Integer),
     Column("ticketId", Integer),
+    Column("monthPoint", Integer),
+    Column("eventPoint", Integer),
     mysql_charset="utf8mb4"
 )
 
