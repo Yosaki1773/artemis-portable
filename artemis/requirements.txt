@@ -1,0 +1,24 @@
+mypy
+wheel
+pytz
+pyyaml
+sqlalchemy==1.4.46
+aiomysql
+pyopenssl
+service_identity
+PyCryptodome
+inflection
+coloredlogs
+pylibmc; platform_system != "Windows"
+wacky
+bcrypt
+jinja2
+protobuf
+pillow
+pyjwt==2.8.0
+websockets
+starlette
+asyncio
+uvicorn
+alembic
+python-multipart

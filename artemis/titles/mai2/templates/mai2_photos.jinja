@@ -1,0 +1,28 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+    {% include 'titles/mai2/templates/css/mai2_style.css' %}
+</style>
+<div class="container">
+    {% include 'titles/mai2/templates/mai2_header.jinja' %}
+    <div class="row">
+        <h4 style="text-align: center;">Memorial Photos</h4><sub style="text-align: center;">Photos expire after {{ expire_days }} days</sub>
+        {% if photos is defined and photos is not none and photos|length > 0 %}
+            {% for photo in photos %}
+                <div class="col-lg-6 mt-3" style="text-align: center;">
+                    Playlog #{{ photo.playlog_num }} | Track #{{ photo.track_num }}
+                    <br>
+                    {{ photo.when_upload }}
+                    <br>
+                    <img src="/game/mai2/photo/{{ photo.id }}.jpeg">
+                </div>
+                <br>
+            {% endfor %}
+        {% else %}
+        <div class="col-lg-6 mt-3" style="text-align: center;">
+        <i>No photos</i>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

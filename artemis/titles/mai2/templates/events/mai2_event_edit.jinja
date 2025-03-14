@@ -1,0 +1,16 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<!-- TODO: This can probably just be a modal on the main event page -->
+<form id="frmEvent" method="post" action="/game/mai2/events/update">
+    <h3>Event {{ event.eventId }} for {{ version_list[event.version] }}: {{ event.name }}</h3>
+    <input type="hidden" readonly value="{{event.id}}" id="evtId" name="evtId">
+    <label for="evtEnabled" class="form-label">Enabled</label><br>
+    <input class="form-check-input"  type="checkbox" {{ 'checked' if event.enabled else ''}} id="evtEnabled" name="evtEnabled"><br><br>
+    
+    <label for="evtStart" class="form-label">Start Date</label><br>
+    <input class="form-input"  type="datetime-local" id="evtStart" name="evtStart" value="{{ event.startDate }}"><br><br>
+    
+    <button type="submit" class="btn btn-primary">Update</button>&nbsp;
+    <button type="cancel" class="btn btn-danger">Delete</button>
+</form>
+{% endblock content %}

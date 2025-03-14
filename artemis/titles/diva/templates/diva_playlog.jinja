@@ -1,0 +1,169 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+    {% include 'titles/diva/templates/css/diva_style.css' %}
+</style>
+<div class="container">
+    {% include 'titles/diva/templates/diva_header.jinja' %}
+    {% if playlog is defined and playlog is not none %}
+    <div class="row">
+        <h4 style="text-align: center;">Score counts: {{ playlog_count }}</h4>
+        {% set difficultyName = ['easy', 'normal', 'hard', 'extreme', 'extra extreme'] %}
+        {% set clearState = ['MISSxTAKE', 'STANDARD', 'GREAT', 'EXELLENT', 'PERFECT'] %}
+        {% for record in playlog %}
+            <div class="col-lg-6 mt-3">
+                <div class="card bg-card rounded card-hover">
+                  <div class="card bg-card rounded card-hover">
+                    <div class="card-header row">
+                      <div class="col-8 scrolling-text">
+                        <h5 class="card-text">{{ record.title }}</h5>
+                        <br>
+                        <h6 class="card-text">{{ record.vocaloid_arranger }}</h6>
+                      </div>
+                      <div class="col-4">
+                        <h6 class="card-text">{{record.raw.date_scored}}</h6>
+                      </div>
+                    </div>
+                    <div class="card-body row">
+                      <div class="col-3" style="text-align: center;">
+                        <h4 class="card-text">{{ record.raw.score }}</h4>
+                        <h2>{{ record.raw.atn_pnt / 100 }}%</h2>
+                        <h6>{{ difficultyName[record.raw.difficulty] }}</h6>
+                      </div>
+                      <div class="col-6" style="text-align: center;">
+                        <table class="table-small table-rowdistinc">
+                          <tr>
+                            <td>COOL</td>
+                            <td>{{ record.raw.cool }}</td>
+                          </tr>
+                          <tr>
+                            <td>FINE</td>
+                            <td>{{ record.raw.fine }}</td>
+                          </tr>
+                          <tr>
+                            <td>SAFE</td>
+                            <td>{{ record.raw.safe }}</td>
+                          </tr>
+                          <tr>
+                            <td>SAD</td>
+                            <td>{{ record.raw.sad }}</td>
+                          </tr>
+                          <tr>
+                            <td>WORST</td>
+                            <td>{{ record.raw.worst }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="col-3" style="text-align: center;">
+                        <h6>{{ record.raw.max_combo }}</h6>
+                        {% if record.raw.clr_kind == -1 %}
+                        <h6>{{ clearState[0] }}</h6>
+                        {% elif record.raw.clr_kind == 2 %}
+                        <h6>{{ clearState[1] }}</h6>
+                        {% elif record.raw.clr_kind == 3 %}
+                        <h6>{{ clearState[2] }}</h6>
+                        {% elif record.raw.clr_kind == 4 %}
+                        <h6>{{ clearState[3] }}</h6>
+                        {% elif record.raw.clr_kind == 5 %}
+                        <h6>{{ clearState[4] }}</h6>
+                        {% endif %}
+                        {% if record.raw.clr_kind == -1 %}
+                        <h6>NOT CLEAR</h6>
+                        {% else %}
+                        <h6>CLEAR</h6>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% set playlog_pages = playlog_count // 20 + 1 %}
+    {% elif sesh is defined and sesh is not none and sesh.user_id > 0 %}
+    No Score information found for this account.
+    {% else %}
+        Login to view profile information.
+  {% endif %}
+</div>
+<footer class="navbar-fixed-bottom">
+    <nav aria-label="Score page navication">
+        <ul class="pagination justify-content-center mt-3">
+            <li class="page-item"><a id="prev_page" class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a id="first_page" class="page-link" href="/game/diva/playlog/">1</a></li>
+                <li class="page-item"><a id="prev_3_page" class="page-link" href="">...</a></li>
+                <li class="page-item"><a id="front_page" class="page-link" href="">2</a></li>
+                <li class="page-item"><a id="cur_page" class="page-link active" href="">3</a></li>
+                <li class="page-item"><a id="back_page" class="page-link" href="">4</a></li>
+                <li class="page-item"><a id="next_3_page" class="page-link" href="">...</a></li>
+                <li class="page-item"><a id="last_page" class="page-link" href="/game/diva/playlog/{{ playlog_pages }}">{{
+          playlog_pages }}</a></li>
+      <li class="page-item"><a id="next_page" class="page-link" href="#">Next</a></li>
+      &nbsp
+            </ul>
+        </nav>
+    </footer>
+
+<script>
+  $(document).ready(function () {
+    $('.scrolling-text p, .scrolling-text h1, .scrolling-text h2, .scrolling-text h3, .scrolling-text h4, .scrolling-text h5, .scrolling-text h6').each(function () {
+      var parentWidth = $(this).parent().width();
+      var elementWidth = $(this).outerWidth();
+      var elementWidthWithPadding = $(this).outerWidth(true);
+
+      if (elementWidthWithPadding > parentWidth) {
+        $(this).addClass('scrolling');
+      }
+    });
+
+    var currentUrl = window.location.pathname;
+    var currentPage = parseInt(currentUrl.split('/').pop());
+    var rootUrl = '/game/diva/playlog/';
+    var scorePages = {{ playlog_pages }};
+  if (Number.isNaN(currentPage)) {
+    currentPage = 1;
+  }
+  $('#cur_page').text(currentPage);
+  $('#prev_page').attr('href', rootUrl + (currentPage - 1))
+  $('#next_page').attr('href', rootUrl + (currentPage + 1))
+  $('#front_page').attr('href', rootUrl + (currentPage - 1))
+  $('#front_page').text(currentPage - 1);
+  $('#back_page').attr('href', rootUrl + (currentPage + 1))
+  $('#back_page').text(currentPage + 1);
+  $('#prev_3_page').attr('href', rootUrl + (currentPage - 3))
+  $('#next_3_page').attr('href', rootUrl + (currentPage + 3))
+  if ((currentPage - 1) < 3) {
+    $('#prev_3_page').hide();
+    if ((currentPage - 1) < 2) {
+      $('#front_page').hide();
+      if (currentPage === 1) {
+        $('#first_page').hide();
+        $('#prev_page').addClass('disabled');
+      }
+    }
+  }
+  if ((scorePages - currentPage) < 3) {
+    $('#next_3_page').hide();
+    if ((scorePages - currentPage) < 2) {
+      $('#back_page').hide();
+      if (currentPage === scorePages) {
+        $('#last_page').hide();
+        $('#next_page').addClass('disabled');
+      }
+    }
+  }
+
+  $('#go_button').click(function () {
+    var pageNumber = parseInt($('#page_input').val());
+
+    if (!Number.isNaN(pageNumber) && pageNumber <= scorePages && pageNumber >= 0) {
+      var url = '/game/diva/playlog/' + pageNumber;
+      window.location.href = url;
+    } else {
+      $('#page_input').val('');
+      $('#page_input').attr('placeholder', 'invalid input!');
+    }
+  });
+  });
+</script>
+{% endblock content %}

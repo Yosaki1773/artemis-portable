@@ -1,0 +1,32 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<h1>Gate</h1>
+{% include "core/templates/widgets/err_banner.jinja" %}
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+<form id="login" style="max-width: 240px; min-width: 15%;" action="/gate/gate.login" method="post">
+    <div class="form-group row">
+        <label for="access_code">Access Code or Username</label><br>
+        <input form="login" class="form-control" name="access_code" id="access_code" placeholder="00000000000000000000" maxlength="20" required aria-describedby="access_code_help">
+        <div id="access_code_help" class="form-text">20 Digit access code from a card registered to your account, or your account username. (NOT your username from a game!)</div>
+    </div>
+    <div class="form-group row">
+        <label for="passwd">Password</label><br>
+        <input id="passwd" class="form-control" name="passwd" type="password" placeholder="password" aria-describedby="passwd_help">
+        <div id="passwd_help" class="form-text">Leave blank if registering for the webui. Your card must have been used on a game connected to this server to register.</div>
+    </div>
+    <p></p>
+    <input id="submit" class="btn btn-primary" style="display: block; margin: 0 auto;" form="login" type="submit" value="Login">
+</form>
+{% endblock content %}

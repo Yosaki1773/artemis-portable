@@ -1,0 +1,140 @@
+{
+    "448": {
+        "name_en": "Lucario",
+        "name_jp": "ルカリオ",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png"
+    },
+    "25": {
+        "name_en": "Pikachu",
+        "name_jp": "ピカチュウ",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+    },
+    "68": {
+        "name_en": "Machamp",
+        "name_jp": "カイリキー",
+        "type": 1,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png"
+    },
+    "282": {
+        "name_en": "Gardevoir",
+        "name_jp": "サーナイト",
+        "type": 2,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/282.png"
+    },
+    "461": {
+        "name_en": "Weavile",
+        "name_jp": "マニューラ",
+        "type": 3,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png"
+    },
+    "245": {
+        "name_en": "Suicune",
+        "name_jp": "スイクン",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png"
+    },
+    "6": {
+        "name_en": "Charizard",
+        "name_jp": "リザードン",
+        "type": 1,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
+    },
+    "94": {
+        "name_en": "Gengar",
+        "name_jp": "ゲンガー",
+        "type": 2,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"
+    },
+    "257": {
+        "name_en": "Blaziken",
+        "name_jp": "バシャーモ",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"
+    },
+    "10025": {
+        "name_en": "Pikachu Libre",
+        "name_jp": "マスクド・ピカチュウ",
+        "type": 3,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10084.png"
+    },
+    "254": {
+        "name_en": "Sceptile",
+        "name_jp": "ジュカイン",
+        "type": 3,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png"
+    },
+    "609": {
+        "name_en": "Chandelure",
+        "name_jp": "シャンデラ",
+        "type": 1,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png"
+    },
+    "150": {
+        "name_en": "Mewtwo",
+        "name_jp": "ミュウツー",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
+    },
+    "10150": {
+        "name_en": "Shadow Mewtwo",
+        "name_jp": "ダークミュウツー",
+        "type": 2,
+        "artwork": "https://archives.bulbagarden.net/media/upload/7/7a/Pokk%C3%A9n_Shadow_Mewtwo.png"
+    },
+    "445": {
+        "name_en": "Garchomp",
+        "name_jp": "ガブリアス",
+        "type": 1,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"
+    },
+    "654": {
+        "name_en": "Braixen",
+        "name_jp": "テールナー",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/654.png"
+    },
+    "491": {
+        "name_en": "Darkrai",
+        "name_jp": "ダークライ",
+        "type": 2,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png"
+    },
+    "212": {
+        "name_en": "Scizor",
+        "name_jp": "ハッサム",
+        "type": 1,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/212.png"
+    },
+    "453": {
+        "name_en": "Croagunk",
+        "name_jp": "グレッグル",
+        "type": 3,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/453.png"
+    },
+    "395": {
+        "name_en": "Empoleon",
+        "name_jp": "エンペルト",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png"
+    },
+    "724": {
+        "name_en": "Decidueye",
+        "name_jp": "ジュナイパー",
+        "type": 0,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/724.png"
+    },
+    "681": {
+        "name_en": "Aegislash",
+        "name_jp": "ギルガルド",
+        "type": 2,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/681.png"
+    },
+    "9": {
+        "name_en": "Blastoise",
+        "name_jp": "カメックス",
+        "type": 1,
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png"
+    }
+}

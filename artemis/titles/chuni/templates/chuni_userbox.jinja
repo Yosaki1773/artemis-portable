@@ -1,0 +1,262 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+  {% include 'titles/chuni/templates/css/chuni_style.css' %}
+</style>
+
+<div class="container">
+  {% include 'titles/chuni/templates/chuni_header.jinja' %}
+  
+  <!-- USER BOX PREVIEW -->
+  <div class="row">
+    <div class="col-lg-8 m-auto mt-3">
+      <div class="card bg-card rounded">
+        <table class="table-large table-rowdistinct">
+          <caption align="top">USER BOX</caption>
+          <tr><td colspan=2 style="height:240px;">
+            <!-- NAMEPLATE -->
+            <img id="preview_nameplate" class="userbox userbox-nameplate" src="">
+            
+            <!-- TEAM -->
+            <img class="userbox userbox-teamframe" src="img/rank/team3.png">
+            <div class="userbox userbox-teamname">{{team_name}}</div>
+
+            <!-- TROPHY/TITLE -->
+            <img id="preview_trophy_rank" class="userbox userbox-trophy" src="">
+            <div id="preview_trophy_name" class="userbox userbox-trophy userbox-trophy-name"></div>
+
+            <!-- NAME/RATING -->
+            <img class="userbox userbox-ratingframe" src="img/rank/rating0.png">
+            <div class="userbox userbox-name">
+              <span class="userbox-name-level-label">Lv.</span>
+              {{ profile.level }}&nbsp;&nbsp;&nbsp;{{ profile.userName }}
+            </div>
+            <div class="userbox userbox-rating rating rating-rank{{ rating_rank }}">
+              <span class="userbox-rating-label">RATING</span>
+              &nbsp;&nbsp;{{ profile.playerRating/100 }}
+            </div>
+
+            <!-- CHARACTER -->
+            <img class="userbox userbox-charaframe" src="img/character-bg.png">
+            <img id="preview_character" class="userbox userbox-chara" src="">
+          </td></tr>
+          
+          <tr><td>Nameplate:</td><td style="width: 80%;"><div id="name_nameplate"></div></td></tr>
+          
+          <tr><td>Trophy:</td><td><div id="name_trophy">
+            <select name="trophy" id="trophy" onchange="changeTrophy()" style="width:100%;">
+            {% for item in trophies.values() %}
+              <option value="{{ item["id"] }}" class="trophy-rank{{ item["rarity"] }}">{{ item["name"] }}</option>
+            {% endfor %}
+            </select>
+          </div></td></tr>
+          
+          <tr><td>Character:</td><td><div id="name_character"></div></td></tr>
+
+          <tr><td colspan=2 style="padding:8px 0px; text-align: center;">
+            <button id="save-btn" class="btn btn-primary" style="width:140px;" onClick="saveUserbox()">SAVE</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="reset-btn" class="btn btn-danger" style="width:140px;" onClick="resetUserbox()">RESET</button>
+          </td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERBOX SELECTION -->
+  <div class="row col-lg-8 m-auto mt-3 scrolling-lists-lg card bg-card rounded">
+     
+    <!-- NAMEPLATE -->
+    <button class="collapsible">Nameplate:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ nameplates|length }}/{{ total_nameplates }}</button>
+    <div id="scrollable-nameplate" class="collapsible-content">
+        {% for item in nameplates.values() %}
+        <img id="nameplate-{{ item["id"] }}" style="padding: 8px 8px;" onclick="changeItem('nameplate', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/nameplate/{{ item["texturePath"] }}" alt="{{ item["name"] }}">
+        <span id="nameplate-br-{{ loop.index }}"></span>
+        {% endfor %}
+    </div>
+    <hr>
+
+    <!-- CHARACTER -->
+    <button class="collapsible">Character:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ characters|length }}/{{ total_characters }}</button>
+    <div id="scrollable-character" class="collapsible-content">
+        {% for item in characters.values() %}
+        <img id="character-{{ item["id"] }}" onclick="changeItem('character', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["iconPath"] }}')" src="img/character/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="character-br-{{ loop.index }}"></span>
+        {% endfor %}
+    </div>
+
+  </div>
+
+  {% if error is defined %}
+  {% include "core/templates/widgets/err_banner.jinja" %}
+  {% endif %}
+</div>
+
+{% if nameplates|length == 0 or characters|length == 0 %}
+<script>
+// Server DB lacks necessary info. Maybe importer never got ran for this verison?
+document.getElementById("name_nameplate").innerHTML = "Server DB needs upgraded or is not populated with necessary data";
+</script>
+{% else %}
+<script>
+{% include 'titles/chuni/templates/scripts/collapsibles.js' %}
+
+///
+/// This script handles all updates to the user box
+///
+total_items = 0;
+orig_id = 1;
+orig_name = 2;
+orig_img = 3;
+curr_id = 4;
+curr_name = 5;
+curr_img = 6;
+userbox_components = {
+    // [total_items, orig_id, orig_name, orig_img, curr_id, curr_name, curr_img]
+    "nameplate":["{{ nameplates|length }}",
+                 "{{ profile.nameplateId }}",
+                 "{{ nameplates[profile.nameplateId]["name"] }}",
+                 "{{ nameplates[profile.nameplateId]["texturePath"] }}", "", "", ""],
+    
+    "character":["{{ characters|length }}",
+                 "{{ profile.charaIllustId }}",
+                 "{{ characters[profile.charaIllustId]["name"] }}",
+                 "{{ characters[profile.charaIllustId]["iconPath"] }}", "", "", ""]
+};
+types = Object.keys(userbox_components);
+orig_trophy = curr_trophy = "{{ profile.trophyId }}";
+curr_trophy_img = "";
+
+function enableButtons(enabled) {
+  document.getElementById("reset-btn").disabled = !enabled;
+  document.getElementById("save-btn").disabled = !enabled;
+}
+
+function changeItem(type, id, name, img) {
+  // clear select style for old component
+  var element = document.getElementById(type + "-" + userbox_components[type][curr_id]);
+  if (element) {
+    element.style.backgroundColor="inherit";
+  }
+  
+  // set new component
+  userbox_components[type][curr_id] = id;
+  userbox_components[type][curr_name] = name;
+  userbox_components[type][curr_img] = img;
+  
+  // update select style for new accessory
+  element = document.getElementById(type + "-" + id);
+  if (element) {
+    element.style.backgroundColor="#5F5";
+  }
+
+  // Update the userbox preview and enable buttons
+  updatePreview();
+  if (id != userbox_components[type][orig_id]) {
+    enableButtons(true);
+  }
+}
+
+function getRankImage(selected_rank) {
+  for (const x of Array(12).keys()) {
+    if (selected_rank.classList.contains("trophy-rank" + x.toString())) {
+      return "rank" + x.toString() + ".png";
+    }
+  }
+  return "rank0.png"; // shouldnt ever happen
+}
+
+function changeTrophy() {
+  var trophy_element = document.getElementById("trophy");
+
+  curr_trophy = trophy_element.value;
+  curr_trophy_img = getRankImage(trophy_element[trophy_element.selectedIndex]);
+  updatePreview();
+  if (curr_trophy != orig_trophy) {
+    enableButtons(true);
+  }
+}
+
+function resetUserbox() {
+  for (const type of types) {
+    changeItem(type, userbox_components[type][orig_id], userbox_components[type][orig_name], userbox_components[type][orig_img]);
+  }
+  // reset trophy
+  document.getElementById("trophy").value = orig_trophy;
+  changeTrophy();
+  // disable the save/reset buttons until something changes
+  enableButtons(false);
+}
+
+function updatePreview() {
+  for (const type of types) {
+    document.getElementById("preview_" + type).src = "img/" + type + "/" + userbox_components[type][curr_img];
+    document.getElementById("name_" + type).innerHTML = userbox_components[type][curr_name];
+  }
+  document.getElementById("preview_trophy_rank").src = "img/rank/" + curr_trophy_img;
+  document.getElementById("preview_trophy_name").innerHTML = document.getElementById("trophy")[document.getElementById("trophy").selectedIndex].innerText;
+}
+
+function saveUserbox() {
+  $.post("/game/chuni/update.userbox", { nameplate: userbox_components["nameplate"][curr_id], 
+                                         trophy: curr_trophy, 
+                                         character: userbox_components["character"][curr_id] })
+    .done(function (data) {
+      // set the current as the original and disable buttons
+      for (const type of types) {
+        userbox_components[type][orig_id] = userbox_components[type][curr_id];
+        userbox_components[type][orig_name] = userbox_components[type][orig_name];
+        userbox_components[type][orig_img] = userbox_components[type][curr_img];
+      }
+      orig_trophy = curr_trophy
+      enableButtons(false);
+    })
+    .fail(function () {
+      alert("Failed to save userbox.");
+    });
+}
+
+function resizePage() {
+  //
+  // Handles item organization in the collapsible scrollables to try to keep the items-per-row presentable
+  //
+  // @note Yes, we could simply let the div overflow like usual. This could however get really nasty looking
+  //       when dealing with something like userbox characters where there are 1000s of possible items being
+  //       display. This approach gives us full control over where items in the div wrap, allowing us to try
+  //       to keep things presentable.
+  //
+  for (const type of types) {
+    var numPerRow = Math.floor(document.getElementById("scrollable-" + type).offsetWidth / 132);
+    
+    // Dont put fewer than 4 per row
+    numPerRow = Math.max(numPerRow, 4);
+
+    // Dont populate more than 8 rows
+    numPerRow = Math.max(numPerRow, Math.ceil(userbox_components[type][total_items] / 8));
+
+    // update the locations of the <br>
+    for (var i = 1; document.getElementById(type + "-br-" + i) != null; i++) {
+        var spanBr = document.getElementById(type + "-br-" + i);
+        if ( i % numPerRow == 0 ) {
+          spanBr.innerHTML = "<br>";
+        } else {
+          spanBr.innerHTML = "";
+        }
+    }
+  }
+  // update the max height for any currently visible containers
+  Collapsibles.updateAllHeights();
+}
+resizePage();
+window.addEventListener('resize', resizePage);
+
+// Set initial preview for current userbox
+resetUserbox();
+// Initialize scroll on all current items so we can see the selected ones
+for (const type of types) {
+  document.getElementById("scrollable-" + type).scrollLeft = document.getElementById(type + "-" + userbox_components[type][curr_id]).offsetLeft;
+}
+
+Collapsibles.expandAll();
+</script>
+{% endif %}
+{% endblock content %}

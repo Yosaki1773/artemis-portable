@@ -1,0 +1,182 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<h1>Sword Art Online Arcade</h1>
+{% if profile is defined and profile is not none and profile.id > 0 %}
+<script src="https://nimiq.github.io/qr-scanner/qr-scanner.min.js"></script>
+<script src="https://nimiq.github.io/qr-scanner/qr-scanner-worker.min.js"></script>
+<script type="text/javascript">
+let qrScanner  = null;
+let isQrRunning = false;
+let lastQrData = "";
+let lastSn = "";
+
+window.addEventListener('load', function () {
+  qrScanner = new QrScanner(
+    document.getElementById('qr-video'),
+    result => { onScanSuccess(result) },
+    { highlightScanRegion: true, highlightCodeOutline: true, maxScansPerSecond: 1 },
+  );
+});
+
+function update_qr_serial(sn) {  
+  let res = document.getElementById('qr-result');
+  let res_sn = document.getElementById('qr_register_serial');
+  let vid = document.getElementById('qr-video');
+  let btn = document.getElementById("btn_toggle_scan");
+
+  console.log(`Card SN: ${sn}`);
+  qrScanner.stop();
+  res_sn.value = sn;
+  res.style['display'] = "";
+  vid.style['display'] = "none";
+  vid.style['max-height'] = "0px";
+  btn.innerText = "Scan";
+}
+
+async function onScanSuccess(decodedText) {
+  const formData = new FormData();
+
+  let decodedHex = ""
+  for (const char of decodedText.bytes) {
+    decodedHex += (char & 0xff).toString(16).padStart(2, '0');
+  }
+  
+  if (decodedHex == lastQrData) {
+    update_qr_serial(lastSn);
+    return;
+  }
+
+  lastQrData = decodedHex;
+  
+  formData.append("qr_data", decodedHex);
+
+  try {
+    const response = await fetch("qr.read", {
+      method: "POST",
+      // Set the FormData instance as the request body
+      body: formData,
+    });
+    let sn = await response.text();
+  if (sn.length == 19) {
+    lastSn = sn;
+    update_qr_serial(sn);
+  }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function toggle_qr_scanner() {
+  let vid = document.getElementById('qr-video');
+  let btn = document.getElementById("btn_toggle_scan");
+  let res = document.getElementById('qr-result');
+
+  if (vid.style['display'] != "") {
+    vid.style['display'] = "";
+    vid.style['max-height'] = "";
+    btn.innerText = "Cancel";
+    qrScanner.start();
+    isQrRunning = true;
+    res.style['display'] = "none";
+  } else {
+    vid.style['display'] = "none";
+    vid.style['max-height'] = "0px";
+    btn.innerText = "Scan";
+    qrScanner.stop();
+
+    if (!isQrRunning) { // make sure we're not desync'd
+      toggle_qr_scanner();
+      return;
+    }
+
+    isQrRunning = false;
+  }
+}
+
+function toggle_new_name_form() {
+  let frm = document.getElementById("new_name_form");
+  let btn = document.getElementById("btn_toggle_form");
+
+  if (frm.style['display'] != "") {
+    frm.style['display'] = "";
+    frm.style['max-height'] = "";
+    btn.innerText = "Cancel";
+  } else {
+    frm.style['display'] = "none";
+    frm.style['max-height'] = "0px";
+    btn.innerText = "Scan";
+  }
+}
+</script>
+<h3>Profile for {{ profile.nick_name }}&nbsp;<button onclick="toggle_new_name_form()" class="btn btn-secondary" id="btn_toggle_form">Edit</button></h3>
+{% include "core/templates/widgets/err_banner.jinja" %}
+{% include "core/templates/widgets/succ_banner.jinja" %}
+<form style="max-width: 33%; display: none; max-height: 0px;" action="/game/sao/update.name" method="post" id="new_name_form">
+  <div class="mb-3">
+    <label for="new_name" class="form-label">New Nickname</label>
+    <input type="text" class="form-control" id="new_name" name="new_name" aria-describedby="new_name_help" maxlength="16">
+    <div id="new_name_help" class="form-text">Must be 16 characters or less</div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<h3>Register Hero Card</h3>
+{% if all_heros is defined and all_heros|length > 0%}
+If you have cards printed on the official network, they must be registered here in order to work with the game.<br>
+Only hero cards are supported at this time. If a card was registered incorrectly, contact a sysadmin.<br>
+<button onclick="toggle_qr_scanner()" class="btn btn-primary" id="btn_toggle_scan">Scan</button><br>
+<video width="950px" id="qr-video"></video>
+<p></p>
+<div id="qr-result" style="display: none; max-width: 33%;">
+  <form id="qr_register" action="/game/sao/qr.register" method="post">
+    <label for="qr_register_serial" class="form-label">Serial Number</label>
+    <input type="text" class="form-control" id="qr_register_serial" name="qr_register_serial" maxlength="19" readonly>
+    <br>
+    <label for="qr_register_hero" class="form-label">Hero</label>
+    <select class="form-select" id="qr_register_hero" name="qr_register_hero">
+      {% for x in all_heros %}
+      <option value="{{ x['HeroLogId'] }}">{{ x['Name'] }} || {{ x['Nickname'] }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <input class="form-check-input" type="checkbox" id="qr_register_holo" name="qr_register_holo">
+    <label class="form-check-label" for="qr_register_holo">Holographic</label>
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+{% else %}
+Card registration is not set up on this server. Please contact a sysadmin.
+{% endif %}
+{% elif sesh is defined and sesh is not none and sesh.user_id > 0 %}
+<script>
+function toggle_reg_form() {
+  let frm = document.getElementById("reg_form");
+  let btn = document.getElementById("toggle_reg");
+
+  if (frm.style['display'] != "") {
+    frm.style['display'] = "";
+    frm.style['max-height'] = "";
+    btn.innerText = "Cancel";
+  } else {
+    frm.style['display'] = "none";
+    frm.style['max-height'] = "0px";
+    btn.innerText = "Register";
+  }
+}
+</script>
+No profile information found for this account.
+<button id="toggle_reg" class="btn btn-primary" onclick="toggle_reg_form()">Register</button>
+<div id="reg_form" style="display: none; max-width: 33%;">
+  <form id="sao_register" action="/game/sao/profile.register" method="post">
+    <label for="sao_register_username" class="form-label">Username</label>
+    <input type="text" class="form-control" id="sao_register_username" name="sao_register_username" maxlength="16">
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+{% else %}
+Login to view profile information.
+{% endif %}
+{% endblock content %}

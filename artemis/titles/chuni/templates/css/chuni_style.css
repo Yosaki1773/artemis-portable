@@ -1,0 +1,536 @@
+.chuni-header {
+    text-align: center;
+}
+
+ul.chuni-navi {
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    text-align: center;
+    display: inline-block;
+}
+
+ul.chuni-navi li {
+    display: inline-block;
+}
+
+ul.chuni-navi li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.chuni-navi li a:hover:not(.active) {
+    background-color: #111;
+}
+
+ul.chuni-navi li a.active {
+    background-color: #4CAF50;
+}
+
+ul.chuni-navi li.right {
+    float: right;
+}
+
+@media screen and (max-width: 600px) {
+
+    ul.chuni-navi li.right,
+    ul.chuni-navi li {
+        float: none;
+        display: block;
+        text-align: center;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-collapse: separate;
+    overflow: hidden;
+    background-color: #555555;
+
+}
+
+th, td {
+    text-align: left;
+    border: none;
+
+}
+
+th {
+    color: white;
+}
+
+.table-rowdistinct tr:nth-child(even) {
+    background-color: #303030;
+}
+
+.table-rowdistinct tr:nth-child(odd) {
+    background-color: #555555;
+}
+
+caption {
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.table-large {
+    margin: 16px;
+}
+
+.table-large th,
+.table-large td {
+    padding: 8px;
+}
+
+.table-small {
+    width: 100%;
+    margin: 4px;
+}
+
+.table-small th,
+.table-small td {
+    padding: 2px;
+}
+
+.bg-card {
+    background-color: #555555;
+}
+
+.card-hover {
+    transition: all 0.2s ease-in-out;
+}
+
+.card-hover:hover {
+    transform: scale(1.02);
+}
+
+.normal {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.hard {
+    color: #ffc107;
+
+    font-weight: bold;
+}
+
+.expert {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.master {
+    color: #dd09e8;
+    font-weight: bold;
+}
+
+.ultimate {
+    color: #000000;
+    font-weight: bold;
+}
+
+.score {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.rainbow {
+    background: linear-gradient(to right, red, yellow, lime, aqua, blue, fuchsia) 0 / 5em;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.platinum {
+    color: #FFFF00;
+    font-weight: bold;
+}
+
+.gold {
+    color: #FFFF00;
+    font-weight: bold;
+}
+
+.rating {
+    font-weight: bold;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.rating-rank0 {
+    color: #008000;
+}
+
+.rating-rank1 {
+    color: #ffa500;
+}
+.rating-rank2 {
+    color: #ff0000;
+}
+.rating-rank3 {
+    color: #800080;
+}
+.rating-rank4 {
+    color: #cd853f;
+}
+.rating-rank5 {
+    color: #c0c0c0;
+}
+.rating-rank6 {
+    color: #ffd700;
+}
+.rating-rank7 {
+    color: #a9a9a9;
+}
+
+.rating-rank8 {
+    background: linear-gradient(to right, red, yellow, lime, aqua, blue, fuchsia) 0 / 5em;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.scrolling-text {
+    overflow: hidden;
+}
+
+.scrolling-text p {
+    white-space: nowrap;
+    display: inline-block;
+
+}
+
+.scrolling-text h6 {
+    white-space: nowrap;
+    display: inline-block;
+
+}
+
+.scrolling-text h5 {
+    white-space: nowrap;
+    display: inline-block;
+
+}
+
+.scrolling {
+    animation: scroll 10s linear infinite;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/*
+    Styles to support collapsible boxes (used for browsing images)
+*/
+.collapsible {
+    background-color: #555;
+    cursor: pointer;
+    padding-bottom: 16px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+    .collapsible:after {
+        content: '[+]';
+        float: right;
+    }
+
+.collapsible-active:after {
+    content: "[-]";
+}
+
+.collapsible-content {
+    max-height: 0px;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.2s ease-out;
+    background-color: #DDD;
+}
+
+/*
+    Styles for favorites star in /playlog
+*/
+.fav {
+    padding: 0;
+    padding-left: 4px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.fav-set {
+    color: gold;
+}
+
+/*
+    Styles for favorites in /favorites
+*/
+.btn-fav-remove {
+    padding:10px;
+    width:100%;
+}
+
+/*
+    Styles for userbox configuration
+*/
+.userbox {
+    position: absolute;
+}
+
+.userbox-nameplate {
+    top: 72px;
+    left: 32px;
+}
+
+.userbox-teamframe {
+    top: 74px;
+    left: 156px;
+}
+
+.userbox-teamname {
+    top: 72px;
+    left: 254px;
+    padding: 8px 20px;
+    font-size: 22px;
+    text-shadow: rgba(0,0,0,0.8) 2px 2px;
+    color: #DDD;
+    width: 588px;
+    text-align: left;
+}
+
+.userbox-trophy {
+    top: 170px;
+    left: 250px;
+    zoom: 0.70;
+}
+
+.userbox-trophy-name {
+    top: 170px;
+    left: 250px;
+    padding: 8px 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    width: 588px;
+    text-align: center;
+}
+
+.userbox-ratingframe {
+    top: 160px;
+    left: 175px;
+}
+
+.userbox-charaframe {
+    top: 267px;
+    left: 824px;
+    zoom: 0.61;
+}
+
+.userbox-chara {
+    top: 266px;
+    left: 814px;
+    zoom: 0.62;
+}
+
+.userbox-name {
+    top: 160px;
+    left: 162px;
+    padding: 8px 20px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+.userbox-name-level-label {
+    font-size: 24px;
+}
+
+.userbox-rating {
+    top: 204px;
+    left: 166px;
+    padding: 8px 20px;
+    font-size: 24px;
+    text-align: left;
+}
+
+.userbox-rating-label {
+    font-size: 16px;
+}
+
+.trophy-rank0 {
+    color: #111;
+    background-color: #DDD;
+}
+.trophy-rank1 {
+    color: #111;
+    background-color: #D85;
+}
+.trophy-rank2 {
+    color: #111;
+    background-color: #ADF;
+}
+.trophy-rank3 {
+    color: #111;
+    background-color: #EB3;
+}
+.trophy-rank4 {
+    color: #111;
+    background-color: #EB3;
+}
+.trophy-rank5 {
+    color: #111;
+    background-color: #FFA;
+}
+.trophy-rank6 {
+    color: #111;
+    background-color: #FFA;
+}
+.trophy-rank7 {
+    color: #111;
+    background-color: #FCF;
+}
+.trophy-rank8 {
+    color: #111;
+    background-color: #FCF;
+}
+.trophy-rank9 {
+    color: #111;
+    background-color: #07C;
+}
+.trophy-rank10 {
+    color: #111;
+    background-color: #7FE;
+}
+.trophy-rank11 {
+    color: #111;
+    background-color: #8D7;
+}
+
+/*
+    Styles for scrollable divs (used for browsing images)
+*/
+.scrolling-lists {
+    table-layout: fixed;
+}
+
+    .scrolling-lists div {
+        overflow: auto;
+        white-space: nowrap;
+    }
+
+    .scrolling-lists img {
+        width: 128px;
+    }
+
+.scrolling-lists-lg {
+    table-layout: fixed;
+    width: 100%;
+}
+
+    .scrolling-lists-lg div {
+        overflow: auto;
+        white-space: nowrap;
+        padding: 4px;
+    }
+
+    .scrolling-lists-lg img {
+        padding: 4px;
+        width: 128px;
+    }
+
+/*
+    Styles for avatar configuration
+*/
+.avatar-preview {
+    position:absolute;
+    zoom:0.5;
+}
+
+.avatar-preview-wear {
+    top: 280px;
+    left: 60px;
+}
+
+.avatar-preview-face {
+    top: 262px;
+    left: 200px;
+}
+
+.avatar-preview-head {
+    top: 130px;
+    left: 120px;
+}
+
+.avatar-preview-skin-body {
+    top: 250px;
+    left: 190px;
+    height: 406px;
+    width: 256px;
+    object-fit: cover;
+    object-position: top;
+}
+
+.avatar-preview-skin-leftfoot {
+    top: 625px;
+    left: 340px;
+    object-position: -84px -406px;
+}
+
+.avatar-preview-skin-rightfoot {
+    top: 625px;
+    left: 40px;
+    object-position: 172px -406px;
+}
+
+.avatar-preview-common {
+    top: 250px;
+    left: 135px;
+}
+
+.avatar-preview-item-lefthand {
+    top: 180px;
+    left: 370px;
+    height: 544px;
+    width: 200px;
+    object-fit: cover;
+    object-position: right;
+}
+
+.avatar-preview-item-righthand {
+    top: 180px;
+    left: 65px;
+    height: 544px;
+    width: 200px;
+    object-fit: cover;
+    object-position: left;
+}
+
+.avatar-preview-back {
+    top: 140px;
+    left: 46px;
+}
+
+.avatar-preview-platform {
+    top: 310px;
+    left: 55px;
+    zoom: 1;
+}

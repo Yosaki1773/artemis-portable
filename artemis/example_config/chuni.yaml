@@ -1,0 +1,53 @@
+server:
+  enable: True
+  loglevel: "info"
+  news_msg: ""
+
+team:
+  name: ARTEMiS # If this is set, all players that are not on a team will use this one by default.
+
+mods:
+  use_login_bonus: True
+  # stock_tickets allows specified ticket IDs to be auto-stocked at login. Format is a comma-delimited string of ticket IDs
+  # note: quanity is not refreshed on "continue" after set - only on subsequent login
+  stock_tickets: 
+  stock_count: 99
+
+  # Allow use of all available customization items in frontend web ui
+  # note: This effectively makes every available item appear to be in the user's inventory. It does _not_ override the "disableFlag" setting on individual items
+  # warning: This can result in pushing a lot of data, especially the userbox items. Recommended for local network use only.
+  forced_item_unlocks:
+    map_icons: False
+    system_voices: False  
+    avatar_accessories: False
+    nameplates: False
+    trophies: False
+    character_icons: False
+      
+version:
+  11:
+    rom: 2.00.00
+    data: 2.00.00
+  12:
+    rom: 2.05.00
+    data: 2.05.00
+  13:
+    rom: 2.10.00
+    data: 2.10.00
+  14:
+    rom: 2.15.00
+    data: 2.15.00
+  15:
+    rom: 2.20.00
+    data: 2.20.00
+  16:
+    rom: 2.25.00
+    data: 2.25.00
+
+crypto:
+  encrypted_only: False
+
+matching:
+  enable: False
+  match_time_limit: 60
+  match_error_limit: 9999

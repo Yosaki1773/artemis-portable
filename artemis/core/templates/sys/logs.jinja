@@ -1,0 +1,202 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<h1>Event Logs</h1>
+<table class="table table-dark table-striped-columns" id="tbl_events">
+    <caption>Viewing last 100 logs</caption>
+    <thead>
+        <tr>
+            <th>Severity</th>
+            <th>Timestamp</th>
+            <th>System</th>
+            <th>Name</th>
+            <th>User</th>
+            <th>Arcade</th>
+            <th>Machine</th>
+            <th>Game</th>
+            <th>Version</th>
+            <th>Message</th>
+            <th>Params</th>
+        </tr>
+    </thead>
+    {% if events is not defined or events|length == 0 %}
+    <tr>
+        <td colspan="11" style="text-align:center"><i>No Events</i></td>
+    </tr>
+    {% endif %}
+</table>
+<div id="div_tbl_ctrl">
+<select id="sel_per_page" onchange="update_tbl()">
+<option value="10" selected>10</option>
+<option value="25">25</option>
+<option value="50">50</option>
+<option value="100">100</option>
+</select>
+&nbsp;
+<button class="btn btn-primary" id="btn_prev" disabled onclick="chg_page(-1)"><<</button>
+<button class="btn btn-primary" id="btn_next" onclick="chg_page(1)">>></button>
+</div>
+<script type="text/javascript">
+{% if events is defined %}
+const TBL_DATA = {{events}};
+{% else %}
+const TBL_DATA = [];
+{% endif %}
+
+var per_page = 0;
+var page = 0;
+
+function update_tbl() {
+    if (TBL_DATA.length == 0) { 
+        document.getElementById("btn_next").disabled = true;
+        document.getElementById("btn_prev").disabled = true;
+        return;
+    }
+    var tbl = document.getElementById("tbl_events");
+    
+    for (var i = 0; i < per_page; i++) {
+        try{
+            tbl.deleteRow(1);
+        } catch {
+            break;
+        }
+    }
+
+    per_page = document.getElementById("sel_per_page").value;
+
+    if (per_page >= TBL_DATA.length) {
+        page = 0;
+        document.getElementById("btn_next").disabled = true;
+        document.getElementById("btn_prev").disabled = true;
+    }
+    
+    for (var i = 0; i < per_page; i++) {
+        let off = (page * per_page) + i;
+        if (off >= TBL_DATA.length) {
+            if (page != 0) {
+                document.getElementById("btn_next").disabled = true;
+                document.getElementById("btn_prev").disabled = false;
+            }
+            break;
+        }
+        
+        var data = TBL_DATA[off];
+        var row = tbl.insertRow(i + 1);
+        var cell_severity = row.insertCell(0);
+        switch (data.severity) {
+            case 10: 
+                cell_severity.innerHTML = "DEBUG";
+                row.classList.add("table-success");
+                break;
+            case 20: 
+                cell_severity.innerHTML = "INFO";
+                row.classList.add("table-info");
+                break;
+            case 30: 
+                cell_severity.innerHTML = "WARN";
+                row.classList.add("table-warning");
+                break;
+            case 40:
+                cell_severity.innerHTML = "ERROR";
+                row.classList.add("table-danger");
+                break;
+            case 50:
+                cell_severity.innerHTML = "CRITICAL";
+                row.classList.add("table-danger");
+                break;
+            default: 
+                cell_severity.innerHTML = "---";
+                row.classList.add("table-primary");
+                break;
+        }
+
+        var cell_ts = row.insertCell(1);
+        cell_ts.innerHTML = data.when_logged;
+        
+        var cell_mod = row.insertCell(2);
+        cell_mod.innerHTML = data.system;
+        
+        var cell_name = row.insertCell(3);
+        cell_name.innerHTML = data.type;
+        
+        var cell_usr = row.insertCell(4);
+        if (data.user == 'NONE') {
+            cell_usr.innerHTML = "---";
+        } else { 
+            cell_usr.innerHTML = "<a href=\"/user/" + data.user + "\">" + data.user + "</a>";
+        }
+
+        var cell_arcade = row.insertCell(5);
+        if (data.arcade == 'NONE') {
+            cell_arcade.innerHTML = "---";
+        } else { 
+            cell_arcade.innerHTML = "<a href=\"/shop/" + data.arcade + "\">" + data.arcade + "</a>";
+        }
+
+        var cell_machine = row.insertCell(6);
+        if (data.arcade == 'NONE') {
+            cell_machine.innerHTML = "---";
+        } else { 
+            cell_machine.innerHTML = "<a href=\"/cab/" + data.machine + "\">" + data.machine + "</a>";
+        }
+
+        var cell_game = row.insertCell(7);
+        if (data.game == 'NONE') {
+            cell_game.innerHTML = "---";
+        } else { 
+            cell_game.innerHTML = data.game;
+        }
+
+        var cell_version = row.insertCell(8);
+        if (data.version == 'NONE') {
+            cell_version.innerHTML = "---";
+        } else { 
+            cell_version.innerHTML = data.version;
+        }
+
+        var cell_msg = row.insertCell(9);
+        if (data.message == '') {
+            cell_msg.innerHTML = "---";
+        } else { 
+            cell_msg.innerHTML = data.message;
+        }
+
+        var cell_deets = row.insertCell(10);
+        if (data.details == '{}') {
+            cell_deets.innerHTML = "---";
+        } else { 
+            cell_deets.innerHTML = data.details;
+        }
+
+    }
+}
+
+function chg_page(num) {
+    var max_page = TBL_DATA.length / per_page;
+    console.log(max_page);
+    page = page + num;
+
+
+    if (page > max_page && max_page >= 1) {
+        page = max_page;
+        document.getElementById("btn_next").disabled = true;
+        document.getElementById("btn_prev").disabled = false;
+        return;
+    } else if (page < 0) {
+        page = 0;
+        document.getElementById("btn_next").disabled = false;
+        document.getElementById("btn_prev").disabled = true;
+        return;
+    } else if (page == 0) {
+        document.getElementById("btn_next").disabled = TBL_DATA.length == 0;
+        document.getElementById("btn_prev").disabled = true;
+    } else {
+        document.getElementById("btn_next").disabled = false;
+        document.getElementById("btn_prev").disabled = false;
+    }
+
+    update_tbl();
+}
+
+update_tbl();
+</script>
+{% endblock content %}

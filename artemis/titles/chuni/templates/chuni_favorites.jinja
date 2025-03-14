@@ -1,0 +1,61 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+  {% include 'titles/chuni/templates/css/chuni_style.css' %}
+</style>
+<div class="container">
+  {% include 'titles/chuni/templates/chuni_header.jinja' %}
+  {% if favorites_by_genre is defined and favorites_by_genre is not none %}
+  <div class="row">
+    <h4 style="text-align: center;">Favorite Count: {{ favorites_count }}</h4>
+    {% for key, genre in favorites_by_genre.items() %}
+      <h2 style="text-align: center; padding-top: 32px">{{ key }}</h2>
+      {% for favorite in genre %}
+      <div class="col-lg-6 mt-3">
+        <div class="card bg-card rounded card-hover">
+          <div class="card-body row">
+            <div class="col-3" style="text-align: center;">
+              <img src="img/jacket/{{ favorite.jacket }}" width="100%">
+            </div>
+            <div class="col scrolling-text">
+              <h5 class="card-text"> {{ favorite.title }} </h5>
+              <br>
+              <h6 class="card-text"> {{ favorite.artist }} </h6>
+              <br><br>
+              <div style="text-align: right;">
+                <button onclick="removeFavorite({{ favorite.favId }})" class="btn btn-secondary btn-fav-remove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+<script>
+  $(document).ready(function () {
+    $('.scrolling-text p, .scrolling-text h1, .scrolling-text h2, .scrolling-text h3, .scrolling-text h4, .scrolling-text h5, .scrolling-text h6').each(function () {
+      var parentWidth = $(this).parent().width();
+      var elementWidth = $(this).outerWidth();
+      var elementWidthWithPadding = $(this).outerWidth(true);
+
+      if (elementWidthWithPadding > parentWidth) {
+        $(this).addClass('scrolling');
+      }
+    });
+  });
+
+  // Remove Favorite
+  function removeFavorite(musicId) {
+    $.post("/game/chuni/update.favorite_music_favorites", { musicId: musicId, isAdd: 0 })
+      .done(function (data) {
+        location.reload();
+      })
+      .fail(function () {
+        alert("Failed to remove favorite.");
+      });
+  }
+</script>
+{% endblock content %}

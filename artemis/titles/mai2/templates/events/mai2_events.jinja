@@ -1,0 +1,156 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<h1>Events</h1>
+<form id="verForm" method="POST" action="/game/mai2/events/version.change">
+<select id="version" name="version" onchange="updateVer()" form="verForm">
+    {% for ver in range(version_list|length) %}
+        <option value="{{ver}}">{{ version_list[ver] }}</option>
+    {% endfor %}
+</select>
+</form>
+<table class="table table-dark table-striped-columns" id="tbl_events">
+    <caption>Viewing all events</caption>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Version</th>
+            <th>Event ID</th>
+            <th>Event Type</th>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>Enabled</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% if events is not defined or events|length == 0 %}
+    <tr>
+        <td colspan="11" style="text-align:center"><i>No Events</i></td>
+    </tr>
+    {% endif %}
+</table>
+<div id="div_tbl_ctrl">
+<select id="sel_per_page" onchange="update_tbl()">
+<option value="10" selected>10</option>
+<option value="25">25</option>
+<option value="50">50</option>
+<option value="100">100</option>
+</select>
+&nbsp;
+<button class="btn btn-primary" id="btn_prev" disabled onclick="chg_page(-1)"><<</button>
+<button class="btn btn-primary" id="btn_next" onclick="chg_page(1)">>></button>
+</div>
+<script type="text/javascript">
+{% if events is defined %}
+const TBL_DATA = {{events}};
+{% else %}
+const TBL_DATA = [];
+{% endif %}
+
+document.getElementById("version").value = {{ sesh.maimai_version }};
+
+var per_page = 0;
+var page = 0;
+
+function updateVer() {
+    var sel = document.getElementById("version");
+    var frm = document.getElementById("verForm");
+
+    if (sel.value == {{ sesh.maimai_version }}) {
+        return;
+    }
+
+    frm.submit();
+}
+
+function update_tbl() {
+    if (TBL_DATA.length == 0) { return; }
+    var tbl = document.getElementById("tbl_events");
+    
+    for (var i = 0; i < per_page; i++) {
+        try{
+            tbl.deleteRow(1);
+        } catch {
+            break;
+        }
+    }
+
+    per_page = document.getElementById("sel_per_page").value;
+
+    if (per_page >= TBL_DATA.length) {
+        page = 0;
+        document.getElementById("btn_next").disabled = true;
+        document.getElementById("btn_prev").disabled = true;
+    }
+    
+    for (var i = 0; i < per_page; i++) {
+        let off = (page * per_page) + i;
+        if (off >= TBL_DATA.length) {
+            if (page != 0) {
+                document.getElementById("btn_next").disabled = true;
+                document.getElementById("btn_prev").disabled = false;
+            }
+            break;
+        }
+        
+        var data = TBL_DATA[off];
+        var row = tbl.insertRow(i + 1);
+
+        var cell_id = row.insertCell(0);
+        cell_id.innerHTML = data.id;
+
+        var cell_ver = row.insertCell(1);
+        cell_ver.innerHTML = data.version;
+        
+        var cell_evtid = row.insertCell(2);
+        cell_evtid.innerHTML = data.eventId;
+        
+        var cell_evttype = row.insertCell(3);
+        cell_evttype.innerHTML = data.eventType;
+        
+        var cell_name = row.insertCell(4);
+        cell_name.innerHTML = data.name;
+        
+        var cell_date = row.insertCell(5);
+        cell_date.innerHTML = data.startDate;
+        
+        var call_enabled = row.insertCell(6);
+        if (data.enabled === "true")
+            call_enabled.innerHTML = "✔"
+        else
+            call_enabled.innerHTML = "✖"
+
+        var cell_action = row.insertCell(7);
+        cell_action.innerHTML = "<a href=/game/mai2/events/" + data.id +"><button class='btn btn-primary'>🖉</button></a>"
+    }
+}
+
+function chg_page(num) {
+    var max_page = TBL_DATA.length / per_page;
+    console.log(max_page);
+    page = page + num;
+
+
+    if (page > max_page && max_page >= 1) {
+        page = max_page;
+        document.getElementById("btn_next").disabled = true;
+        document.getElementById("btn_prev").disabled = false;
+        return;
+    } else if (page < 0) {
+        page = 0;
+        document.getElementById("btn_next").disabled = false;
+        document.getElementById("btn_prev").disabled = true;
+        return;
+    } else if (page == 0) {
+        document.getElementById("btn_next").disabled = false;
+        document.getElementById("btn_prev").disabled = true;
+    } else {
+        document.getElementById("btn_next").disabled = false;
+        document.getElementById("btn_prev").disabled = false;
+    }
+
+    update_tbl();
+}
+
+update_tbl();
+</script>
+{% endblock content %}

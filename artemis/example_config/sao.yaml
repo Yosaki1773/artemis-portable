@@ -1,0 +1,20 @@
+server:
+  enable: True
+  loglevel: "info"
+  auto_register: True
+  photon_app_id: "7df3a2f6-d69d-4073-aafe-810ee61e1cea"
+  data_version: 1
+  game_version: 33
+
+crypt:
+  enable: False
+  key: ""
+
+hash:
+  verify_hash: False
+  hash_base: ""
+
+card:
+  enable: True
+  crypt_password: ""
+  crypt_salt: ""

@@ -1,0 +1,11 @@
+server:
+  enable: True
+  loglevel: "info"
+  festa_enable: True
+  festa_add_VP: "20,5"
+  festa_multiply_VP: "1,2"
+  festa_end_time: "2029-01-01 00:00:00.0"
+
+mods:
+  unlock_all_modules: True
+  unlock_all_items: True

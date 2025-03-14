@@ -1,0 +1,17 @@
+server:
+  enable: True
+  loglevel: "info"
+
+deliver:
+  enable: False
+  udbdl_enable: False
+  content_folder: ""
+
+uploads:
+  photos: False
+  photos_dir: ""
+  movies: False
+  movies_dir: ""
+
+crypto:
+  encrypted_only: False

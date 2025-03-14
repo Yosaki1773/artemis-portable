@@ -1,0 +1,17 @@
+<div class="diva-header">
+  <h1>diva</h1>
+  <ul class="diva-navi">
+    <li><a class="nav-link" href="/game/diva/">PROFILE</a></li>
+    <li><a class="nav-link" href="/game/diva/playlog/">RECORD</a></li>
+  </ul>
+</div>
+<script>
+  $(document).ready(function () {
+    var currentPath = window.location.pathname;
+    if (currentPath === '/game/diva/') {
+      $('.nav-link[href="/game/diva/"]').addClass('active');
+    } else if (currentPath.startsWith('/game/diva/playlog/')) {
+      $('.nav-link[href="/game/diva/playlog/"]').addClass('active');
+    }
+  });
+</script>

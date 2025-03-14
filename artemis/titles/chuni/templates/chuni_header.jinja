@@ -1,0 +1,37 @@
+<div class="chuni-header">
+  <h1>{{ cur_version_name }}</h1>
+  <ul class="chuni-navi">
+    <li><a class="nav-link" href="/game/chuni">PROFILE</a></li>
+    <li><a class="nav-link" href="/game/chuni/rating">RATING</a></li>
+    <li><a class="nav-link" href="/game/chuni/playlog">RECORD</a></li>
+    <li><a class="nav-link" href="/game/chuni/favorites">FAVORITES</a></li>
+    <li><a class="nav-link" href="/game/chuni/musics">MUSICS</a></li>
+    <li><a class="nav-link" href="/game/chuni/userbox">USER BOX</a></li>
+	{% if cur_version >= 11 %} <!-- avatar config introduced in NEW!! -->
+	<li><a class="nav-link" href="/game/chuni/avatar">AVATAR</a></li>  
+	{% endif %}
+  </ul>
+</div>
+<script>
+  $(document).ready(function () {
+    var currentPath = window.location.pathname;
+    if (currentPath === '/game/chuni/') {
+      $('.nav-link[href="/game/chuni"]').addClass('active');
+    } else if (currentPath.startsWith('/game/chuni/playlog')) {
+      $('.nav-link[href="/game/chuni/playlog"]').addClass('active');
+    } else if (currentPath.startsWith('/game/chuni/rating')) {
+      $('.nav-link[href="/game/chuni/rating"]').addClass('active');
+    } else if (currentPath.startsWith('/game/chuni/favorites')) {
+      $('.nav-link[href="/game/chuni/favorites"]').addClass('active');
+    } else if (currentPath.startsWith('/game/chuni/musics')) {
+      $('.nav-link[href="/game/chuni/musics"]').addClass('active');
+    } else if (currentPath.startsWith('/game/chuni/userbox')) {
+      $('.nav-link[href="/game/chuni/userbox"]').addClass('active');
+    } 
+    {% if cur_version >= 11 %} <!-- avatar config introduced in NEW!! -->
+	else if (currentPath.startsWith('/game/chuni/avatar')) {
+      $('.nav-link[href="/game/chuni/avatar"]').addClass('active');
+    }
+	{% endif %}
+  });
+</script>

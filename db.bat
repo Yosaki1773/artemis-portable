@@ -1,0 +1,1 @@
+start mariadb mariadb\bin\mysqld.exe --console

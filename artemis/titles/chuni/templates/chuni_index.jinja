@@ -1,0 +1,278 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+  {% include 'titles/chuni/templates/css/chuni_style.css' %}
+</style>
+<div class="container">
+  {% include 'titles/chuni/templates/chuni_header.jinja' %}
+  {% if profile is defined and profile is not none and profile|length > 0 %}
+  <div class="row">
+    <div class="col-lg-8 m-auto mt-3">
+      <div class="card bg-card rounded">
+        <table class="table-large table-rowdistinct">
+          <caption align="top">OVERVIEW</caption>
+          <tr>
+            <th>{{ profile.userName }}</th>
+            <th>
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#name_change">Edit</button>
+            </th>
+          </tr>
+          <tr>
+            <td>version:</td>
+            <td>
+              <select name="version" id="version" onChange="changeVersion(this)">
+                {% for ver in versions %}
+                {% if ver == cur_version %}
+                <option value="{{ ver }}" selected>{{ version_list[ver] }}</option>
+                {% else %}
+                <option value="{{ ver }}">{{ version_list[ver] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              {% if versions | length > 1 %}
+              <p style="margin-block-end: 0;">You have {{ versions | length }} versions.</p>
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Level:</td>
+            <td>{{ profile.level }}</td>
+          </tr>
+          <tr>
+            <td>Rating:</td>
+            <td>
+              <span class="{% if profile.playerRating >= 1600 %}rainbow{% elif profile.playerRating < 1600 and profile.playerRating >= 1525 %}platinum{% elif profile.playerRating < 1525 and profile.playerRating >=1500 %}platinum{% endif %}">
+                {{ profile.playerRating|float/100 }}
+              </span>
+              <span>
+                (highest: {{ profile.highestRating|float/100 }})
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Over Power:</td>
+            <td>{{ profile.overPowerPoint|float/100 }}({{ profile.overPowerRate|float/100 }})</td>
+          </tr>
+          <tr>
+            <td>Current Point:</td>
+            <td>{{ profile.point }}</td>
+          </tr>
+          <tr>
+            <td>Total Point:</td>
+            <td>{{ profile.totalPoint }}</td>
+          </tr>
+          <tr>
+            <td>Play Counts:</td>
+            <td>{{ profile.playCount }}</td>
+          </tr>
+          <tr>
+            <td>Last Play Date:</td>
+            <td>{{ profile.lastPlayDate }}</td>
+          </tr>
+          {% if cur_version >= 6 %} <!-- MAP ICON and SYSTEM VOICE introduced in AMAZON -->
+          <tr>
+            <td>Map Icon:</td>
+            <td><div id="map-icon-name">{{ map_icons[profile.mapIconId]["name"] if map_icons|length > 0 else "Server DB needs upgraded or is not populated with necessary data" }}</div></td>
+          </tr>
+          <tr>
+            <td>System Voice:</td>
+            <td><div id="system-voice-name">{{ system_voices[profile.voiceId]["name"] if system_voices|length > 0 else "Server DB needs upgraded or is not populated with necessary data" }}</div></td>
+          </tr>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+
+    {% if cur_version >= 6 %} <!-- MAP ICON and SYSTEM VOICE introduced in AMAZON -->
+    <!-- MAP ICON SELECTION -->
+    <div class="col-lg-8 m-auto mt-3 scrolling-lists"> 
+      <div class="card bg-card rounded">
+        <button class="collapsible">Map Icon:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ map_icons|length }}/{{ total_map_icons }}</button>
+        <div id="scrollable-map-icon" class="collapsible-content">
+          {% for item in map_icons.values() %}
+            <img id="map-icon-{{ item["id"] }}" style="padding: 8px 8px;" onclick="saveItem('map-icon', '{{ item["id"] }}', '{{ item["name"] }}')" src="img/mapIcon/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+            <span id="map-icon-br-{{ loop.index }}"></span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SYSTEM VOICE SELECTION -->
+    <div class="col-lg-8 m-auto mt-3 scrolling-lists"> 
+      <div class="card bg-card rounded">
+        <button class="collapsible">System Voice:&nbsp;&nbsp;&nbsp;{{ system_voices|length }}/{{ total_system_voices }}</button>
+        <div id="scrollable-system-voice" class="collapsible-content">
+          {% for item in system_voices.values() %}
+            <img id="system-voice-{{ item["id"] }}" style="padding: 8px 8px;" onclick="saveItem('system-voice', '{{ item["id"] }}', '{{ item["name"] }}')" src="img/systemVoice/{{ item["imagePath"] }}" alt="{{ item["name"] }}">
+            <span id="system-voice-br-{{ loop.index }}"></span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="col-lg-8 m-auto mt-3"> 
+      <div class="card bg-card rounded">
+          <table class="table-large table-rowdistinct">
+            <caption align="top">SCORE</caption>
+            <tr>
+              <td>Total High Score:</td>
+              <td>{{ profile.totalHiScore }}</td>
+            </tr>
+            <tr>
+              <td>Total Basic High Score:</td>
+              <td>{{ profile.totalBasicHighScore }}</td>
+            </tr>
+            <tr>
+              <td>Total Advanced High Score:</td>
+              <td>{{ profile.totalAdvancedHighScore }}</td>
+            </tr>
+            <tr>
+              <td>Total Expert High Score:</td>
+              <td>{{ profile.totalExpertHighScore }}</td>
+            </tr>
+            <tr>
+              <td>Total Master High Score:</td>
+              <td>{{ profile.totalMasterHighScore }}</td>
+            </tr>
+            <tr>
+              <td>Total Ultima High Score :</td>
+              <td>{{ profile.totalUltimaHighScore }}</td>
+            </tr>
+          </table>
+      </div>
+    </div>
+  </div>
+  {% if error is defined %}
+  {% include "core/templates/widgets/err_banner.jinja" %}
+  {% endif %}
+  {% elif sesh is defined and sesh is not none and sesh.user_id > 0 %}
+  No profile information found for this account.
+  {% else %}
+  Login to view profile information.
+  {% endif %}
+</div>
+<div class="modal fade" id="name_change" tabindex="-1" aria-labelledby="name_change_label" data-bs-theme="dark"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Name change</h5>
+      </div>
+      <div class="modal-body">
+        <form id="new_name_form" action="/game/chuni/update.name" method="post" style="outline: 0;">
+          <label class="form-label" for="new_name">new name:</label>
+          <input class="form-control" aria-describedby="newNameHelp" form="new_name_form" id="new_name"
+            name="new_name" maxlength="14" type="text" required>
+          <div id="newNameHelp" class="form-text">name must be full-width character string.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <input type=submit class="btn btn-primary" type="button" form="new_name_form">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function changeVersion(sel) {
+    $.post("/game/chuni/version.change", { version: sel.value })
+      .done(function (data) {
+        location.reload();
+      })
+      .fail(function () {
+        alert("Failed to update version.");
+      });
+  }
+</script>
+
+{% if cur_version >= 6 %} <!-- MAP ICON and SYSTEM VOICE introduced in AMAZON -->
+<script>
+{% include 'titles/chuni/templates/scripts/collapsibles.js' %}
+
+///
+/// This script handles all updates to the map icon and system voice
+///
+total_items = 0;
+curr_id = 1;
+items = {
+    // [total_items, curr_id]
+    "map-icon": ["{{ map_icons|length }}", "{{ profile.mapIconId }}"],
+    "system-voice":["{{ system_voices|length }}", "{{ profile.voiceId }}"]
+};
+types = Object.keys(items);
+
+function changeItem(type, id, name) {
+  // clear select style for old selection
+  var element = document.getElementById(type + "-" + items[type][curr_id]);
+  if (element) {
+    element.style.backgroundColor="inherit";
+  }
+  
+  // set new item
+  items[type][curr_id] = id;
+  document.getElementById(type + "-name").innerHTML = name;
+
+  // update select style for new accessory
+  element = document.getElementById(type + "-" + id);
+  if (element) {
+    element.style.backgroundColor="#5F5";
+  }
+}
+
+function saveItem(type, id, name) {
+  $.post("/game/chuni/update." + type, { id: id })
+    .done(function (data) {
+      changeItem(type, id, name);
+    })
+    .fail(function () {
+      alert("Failed to set " + type + " to " + name);
+    });
+}
+
+function resizePage() {
+  //
+  // Handles item organization in the collapsible scrollables to try to keep the items-per-row presentable
+  //
+  // @note Yes, we could simply let the div overflow like usual. This could however get really nasty looking
+  //       when dealing with something like userbox characters where there are 1000s of possible items being
+  //       display. This approach gives us full control over where items in the div wrap, allowing us to try
+  //       to keep things presentable.
+  //
+  for (const type of types) {
+    var numPerRow = Math.floor(document.getElementById("scrollable-" + type).offsetWidth / 132);
+    
+    // Dont put fewer than 4 per row
+    numPerRow = Math.max(numPerRow, 4);
+
+    // Dont populate more than 6 rows
+    numPerRow = Math.max(numPerRow, Math.ceil(items[type][total_items] / 6));
+
+    // update the locations of the <br>
+    for (var i = 1; document.getElementById(type + "-br-" + i) != null; i++) {
+        var spanBr = document.getElementById(type + "-br-" + i);
+        if ( i % numPerRow == 0 ) {
+          spanBr.innerHTML = "<br>";
+        } else {
+          spanBr.innerHTML = "";
+        }
+    }
+  }
+  // update the max height for any currently visible containers
+  Collapsibles.updateAllHeights();
+}
+resizePage();
+window.addEventListener('resize', resizePage);
+
+// Set initial style for current and scroll to selected
+for (const type of types) {
+  changeItem(type, items[type][curr_id], document.getElementById(type + "-name").innerHTML);
+  document.getElementById("scrollable-" + type).scrollLeft = document.getElementById(type + "-" + items[type][curr_id]).offsetLeft;
+}
+
+Collapsibles.expandAll();
+</script>
+{% endif %}
+
+{% endblock content %}

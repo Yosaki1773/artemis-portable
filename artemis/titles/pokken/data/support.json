@@ -1,0 +1,218 @@
+{
+    "587": {
+        "name_en": "Emolga",
+        "name_jp": "エモンガ",
+        "desc": "Uses Shock Wave to shock the opponent and temporarily decrease its speed.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/587.png"
+    },
+    "653": {
+        "name_en": "Fennekin",
+        "name_jp": "フォッコ",
+        "desc": "Uses Ember to surround itself with fire, creating a trap.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/653.png"
+    },
+    "495": {
+        "name_en": "Snivy",
+        "name_jp": "ツタージャ",
+        "desc": "Uses Leaf Tornado to perform an anti-air attack and send the opponent flying.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/495.png"
+    },
+    "131": {
+        "name_en": "Lapras",
+        "name_jp": "ラプラス",
+        "desc": "Uses Surf as it enters the stage, damaging the enemy with a wave of water.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png"
+    },
+    "657": {
+        "name_en": "Frogadier",
+        "name_jp": "ゲコガシラ",
+        "desc": "Uses Water Pulse to attack from a distance by firing water bullets. Effective when striking from long distance.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/657.png"
+    },
+    "133": {
+        "name_en": "Eevee",
+        "name_jp": "イーブイ",
+        "desc": "Uses Helping Hand to heal the user and temporarily increase their attack power.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"
+    },
+    "385": {
+        "name_en": "Jirachi",
+        "name_jp": "ジラーチ",
+        "desc": "Uses Wish to restore the Synergy Gauge and temporarily strengthen the user's attack power during Synergy Burst.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/385.png"
+    },
+    "547": {
+        "name_en": "Whimsicott",
+        "name_jp": "エルフーン",
+        "desc": "Uses Substitute to render attacks from opponents useless and heal the user.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/547.png"
+    },
+    "38": {
+        "name_en": "Ninetales",
+        "name_jp": "キュウコン",
+        "desc": "Uses Will-O-Wisp to send small flames in front of the user. Enemy's attack power decreased temporarily when contacted.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png"
+    },
+    "429": {
+        "name_en": "Mismagius",
+        "name_jp": "ムウマージ",
+        "desc": "Uses Ominous Wind to attack the opponent and temporarily increase the user's attack power.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/429.png"
+    },
+    "83": {
+        "name_en": "Farfetch'd",
+        "name_jp": "カモネギ",
+        "desc": "Uses Fury Cutter to perform a flurry of attacks toward the opponent.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/83.png"
+    },
+    "101": {
+        "name_en": "Electrode",
+        "name_jp": "マルマイン",
+        "desc": "Uses Explosion to counter an opponent's attack upon defending.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/101.png"
+    },
+    "479": {
+        "name_en": "Rotom",
+        "name_jp": "ロトム",
+        "desc": "Uses Thunder Shock to target enemies in the air and temporarily decrease their speed.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png"
+    },
+    "468": {
+        "name_en": "Togekiss",
+        "name_jp": "トゲキッス",
+        "desc": "Uses Tailwind to temporarily increase the user's speed and recover some health.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png"
+    },
+    "149": {
+        "name_en": "Dragonite",
+        "name_jp": "カイリュー",
+        "desc": "Uses Draco Meteor to attack multiple times over a wide area.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png"
+    },
+    "494": {
+        "name_en": "Victini",
+        "name_jp": "ビクティニ",
+        "desc": "Uses V-create to temporarily make the user's attacks critical hits, restores some of the user's health, and increases the user's Synergy Gauge. Unlike other Enhance Pokémon, Victini can actually damage the foe if they're above it when flying off the screen.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/494.png"
+    },
+    "453": {
+        "name_en": "Croagunk",
+        "name_jp": "グレッグル",
+        "desc": "Uses Toxic to attack opponent and temporarily decrease its defense.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/453.png"
+    },
+    "700": {
+        "name_en": "Sylveon",
+        "name_jp": "ニンフィア",
+        "desc": "Uses Reflect to heal user and temporarily increase their defense.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/700.png"
+    },
+    "417": {
+        "name_en": "Pachirisu",
+        "name_jp": "パチリス",
+        "desc": "Uses Follow Me to eliminate long distance attacks. Effective when get in close.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/417.png"
+    },
+    "129": {
+        "name_en": "Magikarp",
+        "name_jp": "コイキング",
+        "desc": "Uses Bounce to disrupt the enemy's attack when hit by an opponent. Effective for interrupting combos.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png"
+    },
+    "104": {
+        "name_en": "Cubone",
+        "name_jp": "カラカラ",
+        "desc": "Uses Bonemerang to attack from a distance and can pull an enemy in.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/104.png"
+    },
+    "50": {
+        "name_en": "Diglett",
+        "name_jp": "ディグダ",
+        "desc": "Uses Dig to attack from below, making easy to aim for a combo.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/50.png"
+    },
+    "82": {
+        "name_en": "Magneton",
+        "name_jp": "レアコイル",
+        "desc": "Uses Tri Attack to attack from a distance diagonally upward and inflict two random negative statuses.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png"
+    },
+    "195": {
+        "name_en": "Quagsire",
+        "name_jp": "ヌオー",
+        "desc": "Uses Mud Bomb to attack opponent on the ground, even when blocked.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/195.png"
+    },
+    "196": {
+        "name_en": "Espeon",
+        "name_jp": "エーフィ",
+        "desc": "Uses Morning Sun to remove any statuses and recover health, with more health recovered with less time remaining in the round.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/196.png"
+    },
+    "197": {
+        "name_en": "Umbreon",
+        "name_jp": "ブラッキー",
+        "desc": "Uses Snarl to absorb an opponent's Synergy Gauge and prevent them from performing any critical hits.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/197.png"
+    },
+    "643": {
+        "name_en": "Reshiram",
+        "name_jp": "レシラム",
+        "desc": "Uses Blue Flare to attack straight forward with a powerful flame. In the DX version, it can only be called once per round.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png"
+    },
+    "488": {
+        "name_en": "Cresselia",
+        "name_jp": "クレセリア",
+        "desc": "Uses Lunar Dance to heal the user of any negative status, recovers health and Synergy Gauge, but can only be used once per round.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/488.png"
+    },
+    "717": {
+        "name_en": "Yveltal",
+        "name_jp": "イベルタル",
+        "desc": "Uses Oblivion Wing to attack from the sky and seal off the opponent's Synergy Burst. In the DX version, it can only be called once per round.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/717.png"
+    },
+    "381": {
+        "name_en": "Latios",
+        "name_jp": "ラティオス",
+        "desc": "Uses Luster Purge to place attacks around the enemy in order to restrict their movements. In the DX version, it can only be called once per round.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png"
+    },
+    "725": {
+        "name_en": "Litten",
+        "name_jp": "ニャビー",
+        "desc": "Uses Fire Fang to attack toward the enemy. Damage increases when the player's at lower HP.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/725.png"
+    },
+    "728": {
+        "name_en": "Popplio",
+        "name_jp": "アシマリ",
+        "desc": "Uses Bubble Beam to temporarily increase attack and grant a double jump while in midair.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/728.png"
+    },
+    "10079": {
+        "name_en": "Mega Rayquaza",
+        "name_jp": "レックウザ",
+        "desc": "Uses Dragon Ascent to attack from a distance at tremendous speed. It also consumes the user's Synergy Gauge. It can only be called once per round.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10079.png"
+    },
+    "778": {
+        "name_en": "Mimikyu",
+        "name_jp": "ミミッキュ",
+        "desc": "Uses Play Rough to attack continuously from behind and inflict double negative status.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/778.png"
+    },
+    "151": {
+        "name_en": "Mew",
+        "name_jp": "ミュウ",
+        "desc": "Uses Miraculous Power to randomly increase the user's Synergy Gauge, temporarily makes the user's attacks critical hits, and/or gives the user additional random positive status.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"
+    },
+    "251": {
+        "name_en": "Celebi",
+        "name_jp": "セレビィ",
+        "desc": "Uses Time Travel (Japanese: ときわたり Time Travel) to switch between Phases at almost any given moment, even when enemy guards an attack.",
+        "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png"
+    }
+}

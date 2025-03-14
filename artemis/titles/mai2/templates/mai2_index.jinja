@@ -1,0 +1,134 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+  {% include 'titles/mai2/templates/css/mai2_style.css' %}
+</style>
+<div class="container">
+  {% include 'titles/mai2/templates/mai2_header.jinja' %}
+  {% if profile is defined and profile is not none and profile|length > 0 %}
+  <div class="row">
+    <div class="col-lg-8 m-auto mt-3">
+      <div class="card bg-card rounded">
+        <table class="table-large table-rowdistinct">
+          <caption align="top">OVERVIEW</caption>
+          <tr>
+            <th>{{ profile.userName }}</th>
+            <th>
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#name_change">Edit</button>
+            </th>
+          </tr>
+          <tr>
+            <td>version:</td>
+            <td>
+              <select name="version" id="version" onChange="changeVersion(this)">
+                {% for ver in versions %}
+                {% if ver == cur_version %}
+                <option value="{{ ver }}" selected>{{ version_list[ver] }}</option>
+                {% else %}
+                <option value="{{ ver }}">{{ version_list[ver] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              {% if versions | length > 1 %}
+              <p style="margin-block-end: 0;">You have {{ versions | length }} versions.</p>
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Rating:</td>
+            <td>
+              <span class="{% if profile.playerRating >= 15000 %}rainbow{% elif profile.playerRating < 15000 and profile.playerRating >= 14500 %}platinum{% elif profile.playerRating < 14500 and profile.playerRating >=14000 %}platinum{% endif %}">
+                {{ profile.playerRating }}
+              </span>
+              <span>
+                (highest: {{ profile.highestRating }})
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Play Counts:</td>
+            <td>{{ profile.playCount }}</td>
+          </tr>
+          <tr>
+            <td>Last Play Date:</td>
+            <td>{{ profile.lastPlayDate }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-8 m-auto mt-3"> 
+      <div class="card bg-card rounded">
+          <table class="table-large table-rowdistinct">
+            <caption align="top">SCORE</caption>
+            <tr>
+              <td>Total Delux Score:</td>
+              <td>{{ profile.totalDeluxscore }}</td>
+            </tr>
+            <tr>
+              <td>Total Basic Delux Score:</td>
+              <td>{{ profile.totalBasicDeluxscore }}</td>
+            </tr>
+            <tr>
+              <td>Total Advanced Delux Score:</td>
+              <td>{{ profile.totalAdvancedDeluxscore }}</td>
+            </tr>
+            <tr>
+              <td>Total Expert Delux Score:</td>
+              <td>{{ profile.totalExpertDeluxscore }}</td>
+            </tr>
+            <tr>
+              <td>Total Master Delux Score:</td>
+              <td>{{ profile.totalMasterDeluxscore }}</td>
+            </tr>
+            <tr>
+              <td>Total ReMaster Delux Score:</td>
+              <td>{{ profile.totalReMasterDeluxscore }}</td>
+            </tr>
+          </table>
+      </div>
+    </div>
+  </div>
+  {% if error is defined %}
+  {% include "core/templates/widgets/err_banner.jinja" %}
+  {% endif %}
+  {% elif sesh is defined and sesh is not none and sesh.user_id > 0 %}
+  No profile information found for this account.
+  {% else %}
+  Login to view profile information.
+  {% endif %}
+</div>
+<div class="modal fade" id="name_change" tabindex="-1" aria-labelledby="name_change_label" data-bs-theme="dark"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Name change</h5>
+      </div>
+      <div class="modal-body">
+        <form id="new_name_form" action="/game/mai2/update.name" method="post" style="outline: 0;">
+          <label class="form-label" for="new_name">new name:</label>
+          <input class="form-control" aria-describedby="newNameHelp" form="new_name_form" id="new_name"
+            name="new_name" maxlength="14" type="text" required>
+          <div id="newNameHelp" class="form-text">name must be full-width character string.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <input type=submit class="btn btn-primary" type="button" form="new_name_form">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function changeVersion(sel) {
+    $.post("/game/mai2/version.change", { version: sel.value })
+      .done(function (data) {
+        location.reload();
+      })
+      .fail(function () {
+        alert("Failed to update version.");
+      });
+  }
+</script>
+{% endblock content %}

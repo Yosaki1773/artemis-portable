@@ -1,0 +1,309 @@
+{% extends "core/templates/index.jinja" %}
+{% block content %}
+<style>
+  {% include 'titles/chuni/templates/css/chuni_style.css' %}
+</style>
+
+<div class="container">
+  {% include 'titles/chuni/templates/chuni_header.jinja' %}
+  
+  <!-- AVATAR PREVIEW -->
+  <div class="row">
+    <div class="col-lg-8 m-auto mt-3">
+      <div class="card bg-card rounded">
+        <table class="table-large table-rowdistinct">
+          <caption align="top">AVATAR</caption>
+          <tr><td style="height:340px; width:50%" rowspan=8>
+            <img class="avatar-preview avatar-preview-platform" src="img/avatar-platform.png">
+            <img id="preview1_back" class="avatar-preview avatar-preview-back" src="">
+            <img id="preview1_skin" class="avatar-preview avatar-preview-skin-rightfoot" src="">
+            <img id="preview2_skin" class="avatar-preview avatar-preview-skin-leftfoot" src="">
+            <img id="preview3_skin" class="avatar-preview avatar-preview-skin-body" src="">
+            <img id="preview1_wear" class="avatar-preview avatar-preview-wear" src="">
+            <img class="avatar-preview avatar-preview-common" src="img/avatar-common.png">
+            <img id="preview1_head" class="avatar-preview avatar-preview-head" src="">
+            <img id="preview1_face" class="avatar-preview avatar-preview-face" src="">
+            <img id="preview1_item" class="avatar-preview avatar-preview-item-righthand" src="">
+            <img id="preview2_item" class="avatar-preview avatar-preview-item-lefthand" src="">
+            <img id="preview1_front" class="avatar-preview avatar-preview-front" src="">
+            </td>
+          </tr>
+          <tr><td>Wear:</td><td><div id="name_wear"></div></td></tr>
+          <tr><td>Face:</td><td><div id="name_face"></div></td></tr>
+          <tr><td>Head:</td><td><div id="name_head"></div></td></tr>
+          <tr><td>Skin:</td><td><div id="name_skin"></div></td></tr>
+          <tr><td>Item:</td><td><div id="name_item"></div></td></tr>
+          <tr><td>Front:</td><td><div id="name_front"></div></td></tr>
+          <tr><td>Back:</td><td><div id="name_back"></div></td></tr>
+
+          <tr><td colspan=3 style="padding:8px 0px; text-align: center;">
+            <button id="save-btn" class="btn btn-primary" style="width:140px;" onClick="saveAvatar()">SAVE</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="reset-btn" class="btn btn-danger" style="width:140px;" onClick="resetAvatar()">RESET</button>
+          </td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCESSORY SELECTION -->
+  <div class="row col-lg-8 m-auto mt-3 scrolling-lists-lg card bg-card rounded">
+       
+    <!-- WEAR ACCESSORIES -->
+    <button class="collapsible">Wear:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wears|length }}/{{ total_wears }} {{ "items" if total_wears > 1 else "item" }}</button>
+    <div id="scrollable-wear" class="collapsible-content">
+        {% for item in wears.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('wear', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="wear-br-{{ loop.index }}"></span>
+        {% endfor %}
+    </div>
+    <hr>
+
+    <!-- FACE ACCESSORIES -->
+    <button class="collapsible">Face:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ faces|length }}/{{ total_faces }} {{ "items" if total_faces > 1 else "item" }}</button>
+    <div id="scrollable-face" class="collapsible-content">
+        {% for item in faces.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('face', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="face-br-{{ loop.index }}"></span>
+        {% endfor %}    
+    </div>
+    <hr>
+
+    <!-- HEAD ACCESSORIES -->
+    <button class="collapsible">Head:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ heads|length }}/{{ total_heads }} {{ "items" if total_heads > 1 else "item" }}</button>
+    <div id="scrollable-head" class="collapsible-content">
+        {% for item in heads.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('head', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="head-br-{{ loop.index }}"></span>
+        {% endfor %}
+    </div>
+    <hr>
+
+    <!-- SKIN ACCESSORIES -->
+    <button class="collapsible">Skin:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ skins|length }}/{{ total_skins }} {{ "items" if total_skins > 1 else "item" }}</button>
+    <div id="scrollable-skin" class="collapsible-content">
+        {% for item in skins.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('skin', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="skin-br-{{ loop.index }}"></span>
+        {% endfor %}
+    </div>
+    <hr>
+
+    <!-- ITEM ACCESSORIES -->
+    <button class="collapsible">Item:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ items|length }}/{{ total_items }} {{ "items" if total_items > 1 else "item" }}</button>
+    <div id="scrollable-item" class="collapsible-content">
+        {% for item in items.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('item', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="item-br-{{ loop.index }}"></span>
+        {% endfor %}
+    </div>
+    <hr>
+
+    <!-- FRONT ACCESSORIES -->
+    <button class="collapsible">Front:&nbsp;&nbsp;&nbsp;&nbsp;{{ fronts|length }}/{{ total_fronts }} {{ "items" if total_fronts > 1 else "item" }}</button>
+    <div id="scrollable-front" class="collapsible-content">
+        {% for item in fronts.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('front', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="front-br-{{ loop.index }}"></span>
+        {% endfor %}  
+    </div>
+    <hr>
+
+    <!-- BACK ACCESSORIES -->
+    <button class="collapsible">Back:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ backs|length }}/{{ total_backs }} {{ "items" if total_backs > 1 else "item" }}</button>
+    <div id="scrollable-back" class="collapsible-content">
+        {% for item in backs.values() %}
+        <img id="{{ item["id"] }}" onclick="changeAccessory('back', '{{ item["id"] }}', '{{ item["name"] }}', '{{ item["texturePath"] }}')" src="img/avatar/{{ item["iconPath"] }}" alt="{{ item["name"] }}">
+        <span id="back-br-{{ loop.index }}"></span>
+        {% endfor %}  
+    </div>
+
+  </div>
+
+  {% if error is defined %}
+  {% include "core/templates/widgets/err_banner.jinja" %}
+  {% endif %}
+</div>
+
+{% if wears|length == 0 or faces|length == 0 or heads|length == 0 or skins|length == 0 or items|length == 0 or fronts|length == 0 or backs|length == 0 %}
+<script>
+// Server DB lacks necessary info. Maybe importer never got ran for this verison?
+document.getElementById("name_wear").innerHTML = "Server DB needs upgraded or is not populated with necessary data";
+</script>
+{% else %}
+<script>
+{% include 'titles/chuni/templates/scripts/collapsibles.js' %}
+
+///
+/// This script handles all updates to the avatar
+///
+total_items = 0;
+orig_id = 1;
+orig_name = 2;
+orig_img = 3;
+curr_id = 4;
+curr_name = 5;
+curr_img = 6;
+accessories = {
+    // [total_items, orig_id, orig_name, orig_img, curr_id, curr_name, curr_img]
+    "wear":["{{ wears|length }}", 
+            "{{ profile.avatarWear }}",
+            "{{ wears[profile.avatarWear]["name"] }}",
+            "{{ wears[profile.avatarWear]["texturePath"] }}", "", "", "" ],
+    
+    "face":["{{ faces|length }}",
+            "{{ profile.avatarFace }}",
+            "{{ faces[profile.avatarFace]["name"] }}",
+            "{{ faces[profile.avatarFace]["texturePath"] }}", "", "", "" ],
+    
+    "head":["{{ heads|length }}",
+            "{{ profile.avatarHead }}",
+            "{{ heads[profile.avatarHead]["name"] }}",
+            "{{ heads[profile.avatarHead]["texturePath"] }}", "", "", "" ],
+    
+    "skin":["{{ skins|length }}",
+            "{{ profile.avatarSkin }}",
+            "{{ skins[profile.avatarSkin]["name"] }}",
+            "{{ skins[profile.avatarSkin]["texturePath"] }}", "", "", "" ],
+    
+    "item":["{{ items|length }}",
+            "{{ profile.avatarItem }}",
+            "{{ items[profile.avatarItem]["name"] }}",
+            "{{ items[profile.avatarItem]["texturePath"] }}", "", "", "" ],
+    
+    "front":["{{ fronts|length }}",
+             "{{ profile.avatarFront }}",
+             "{{ fronts[profile.avatarFront]["name"] }}",
+             "{{ fronts[profile.avatarFront]["texturePath"] }}", "", "", "" ],             
+    
+    "back":["{{ backs|length }}",
+            "{{ profile.avatarBack }}",
+            "{{ backs[profile.avatarBack]["name"] }}",
+            "{{ backs[profile.avatarBack]["texturePath"] }}", "", "", "" ]            
+};
+types = Object.keys(accessories);
+
+function enableButtons(enabled) {
+  document.getElementById("reset-btn").disabled = !enabled;
+  document.getElementById("save-btn").disabled = !enabled;
+}
+
+function changeAccessory(type, id, name, img) {
+  // clear select style for old accessory
+  var element = document.getElementById(accessories[type][curr_id]);
+  if (element) {
+    element.style.backgroundColor="inherit";
+  }
+  
+  // set new accessory
+  accessories[type][curr_id] = id;
+  accessories[type][curr_name] = name;
+  accessories[type][curr_img] = img;
+  
+  // update select style for new accessory
+  element = document.getElementById(id);
+  if (element) {
+    element.style.backgroundColor="#5F5";
+  }
+
+  // Update the avatar preview and enable buttons
+  updatePreview();
+  if (id != accessories[type][orig_id]) {
+    enableButtons(true);
+  }
+}
+
+function resetAvatar() {
+  for (const type of types) {
+    changeAccessory(type, accessories[type][orig_id], accessories[type][orig_name], accessories[type][orig_img]);
+  }
+  // disable the save/reset buttons until something changes
+  enableButtons(false);
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function updatePreview() {
+  for (const type of types) {
+    for (let i = 1; i <= 3; i++) {
+      var img = document.getElementById("preview" + i + "_" + type);
+      if (img) {
+        img.src = "img/avatar/" + accessories[type][curr_img];
+      }
+    }
+    document.getElementById("name_" + type).innerHTML = accessories[type][curr_name];
+  }
+}
+
+function saveAvatar() {
+  $.post("/game/chuni/update.avatar", { wear: accessories["wear"][curr_id], 
+                                        face: accessories["face"][curr_id], 
+                                        head: accessories["head"][curr_id], 
+                                        skin: accessories["skin"][curr_id], 
+                                        item: accessories["item"][curr_id], 
+                                        front: accessories["front"][curr_id], 
+                                        back: accessories["back"][curr_id] })
+    .done(function (data) {
+      // set the current as the original and disable buttons
+      for (const type of types) {
+        accessories[type][orig_id] = accessories[type][curr_id];
+        accessories[type][orig_name] = accessories[type][curr_name];
+        accessories[type][orig_img] = accessories[type][curr_img];
+      }
+      enableButtons(false);
+    })
+    .fail(function () {
+      alert("Failed to save avatar.");
+    });
+}
+
+function resizePage() {
+  //
+  // Handles item organization in the collapsible scrollables to try to keep the items-per-row presentable
+  //
+  // @note Yes, we could simply let the div overflow like usual. This could however get really nasty looking
+  //       when dealing with something like userbox characters where there are 1000s of possible items to
+  //       display. This approach gives us full control over where items in the div wrap, allowing us to try
+  //       to keep things presentable.
+  //
+  for (const type of types) {
+    var numPerRow = Math.floor(document.getElementById("scrollable-" + type).offsetWidth / 132);
+    
+    // Dont put fewer than 4 per row
+    numPerRow = Math.max(numPerRow, 4);
+
+    // Dont populate more than 8 rows
+    numPerRow = Math.max(numPerRow, Math.ceil(accessories[type][total_items] / 8));
+
+    // update the locations of the <br>
+    for (var i = 1; document.getElementById(type + "-br-" + i) != null; i++) {
+        var spanBr = document.getElementById(type + "-br-" + i);
+        if ( i % numPerRow == 0 ) {
+          spanBr.innerHTML = "<br>";
+        } else {
+          spanBr.innerHTML = "";
+        }
+    }
+  }
+  // update the max height for any currently visible containers
+  Collapsibles.updateAllHeights();
+}
+resizePage();
+window.addEventListener('resize', resizePage);
+
+// Set initial preview for current avatar
+resetAvatar();
+// Initialize scroll on all current accessories so we can see the selected ones
+for (const type of types) {
+  document.getElementById("scrollable-" + type).scrollLeft = document.getElementById(accessories[type][curr_id]).offsetLeft;
+}
+
+// Expand the first collapsible so the user can get the gist of it.
+Collapsibles.expandFirst();
+</script>
+{% endif %}
+
+{% endblock content %}

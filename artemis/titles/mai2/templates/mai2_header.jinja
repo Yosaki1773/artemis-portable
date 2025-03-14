@@ -1,0 +1,25 @@
+<div class="mai2-header">
+  <h1>maimai</h1>
+  <ul class="mai2-navi">
+    <li><a class="nav-link" href="/game/mai2/">PROFILE</a></li>
+    <li><a class="nav-link" href="/game/mai2/playlog/">RECORD</a></li>
+    <li><a class="nav-link" href="/game/mai2/playlog/photos">PHOTOS</a></li>
+    {% if sesh is defined and sesh is not none and "{:08b}".format(sesh.permissions)[4] == "1" %}
+    <li><a class="nav-link" href="/game/mai2/events/">EVENTS</a></li>
+    {% endif %}
+  </ul>
+</div>
+<script>
+  $(document).ready(function () {
+    var currentPath = window.location.pathname;
+    if (currentPath === '/game/mai2/') {
+      $('.nav-link[href="/game/mai2/"]').addClass('active');
+    } else if (currentPath.startsWith('/game/mai2/playlog/photos')) {
+      $('.nav-link[href="/game/mai2/playlog/photos"]').addClass('active');
+    } else if (currentPath.startsWith('/game/mai2/playlog/')) {
+      $('.nav-link[href="/game/mai2/playlog/"]').addClass('active');
+    } {% if sesh is defined and sesh is not none and "{:08b}".format(sesh.permissions)[4] == "1" %}else if (currentPath.startsWith('/game/mai2/events/')) {
+      $('.nav-link[href="/game/mai2/events/"]').addClass('active');
+    } {% endif %}
+  });
+</script>
