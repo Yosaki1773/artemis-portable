@@ -1,1 +1,4 @@
-start mariadb mariadb\bin\mysqld.exe --console
+@echo off
+cd mariadb/bin
+mysqld --console
+pause

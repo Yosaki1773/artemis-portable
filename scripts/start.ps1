@@ -1,5 +1,5 @@
 $mariadb = Start-Process -NoNewWindow -PassThru -WorkingDirectory mariadb mariadb\bin\mysqld.exe --console
-Start-Process -wait  -NoNewWindow -WorkingDirectory artemis python\python.exe index.py
+Start-Process -wait  -NoNewWindow -WorkingDirectory artemis py index.py
 
 Stop-Process $mariadb.Id
 
