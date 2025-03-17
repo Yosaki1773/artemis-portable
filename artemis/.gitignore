@@ -157,7 +157,7 @@ cert/*
 !cert/billing.key
 !cert/server.key
 !cert/server.pem
-config/*
+
 deliver/*
 *.gz
 

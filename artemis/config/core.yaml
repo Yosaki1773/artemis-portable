@@ -1,0 +1,59 @@
+server:
+  listen_address: 0.0.0.0
+  hostname: localhost
+  port: 80
+  ssl_key: cert/title.key
+  ssl_cert: cert/title.crt
+  allow_user_registration: true
+  allow_unregistered_serials: true
+  name: ARTEMiS
+  is_develop: false
+  is_using_proxy: false
+  proxy_port: 0
+  proxy_port_ssl: 0
+  log_dir: logs
+  check_arcade_ip: false
+  strict_ip_checking: false
+  threading: true
+title:
+  loglevel: info
+database:
+  host: localhost
+  username: aime
+  password: pjgFXiOPLcyKrCutJZEVUMBQxRHWTSkI
+  name: aime
+  port: 41360
+  protocol: mysql
+  sha2_password: false
+  loglevel: info
+  enable_memcached: true
+  memcached_host: localhost
+frontend:
+  enable: true
+  port: 8080
+  loglevel: info
+  secret: ''
+  path: D:/servers/actaeon
+allnet:
+  standalone: false
+  port: 80
+  loglevel: info
+  allow_online_updates: false
+  update_cfg_folder: ''
+billing:
+  standalone: true
+  loglevel: info
+  port: 8443
+  ssl_key: cert/server.key
+  ssl_cert: cert/server.pem
+  signing_key: cert/billing.key
+aimedb:
+  enable: true
+  listen_address: ''
+  loglevel: info
+  port: 22345
+  key: Copyright(C)SEGA
+  id_secret: ''
+  id_lifetime_seconds: 86400
+mucha:
+  loglevel: info

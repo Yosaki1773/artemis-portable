@@ -98,14 +98,8 @@ class ChuniNew(ChuniBase):
             )
             else ""
         )
-        user_version = await self.data.profile.get_profile_data(1, self.version)
-        if user_version:
-            version = {
-                "rom": user_version["lastRomVersion"],
-                "data": user_version["lastDataVersion"],
-            }
-        else:
-            version = self.game_cfg.version.version(self.version)
+        
+        version = self.game_cfg.version.version(self.version)
 
         self.logger.info(f"{version}")
         return {

@@ -17,7 +17,7 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column('mai2_item_favorite_music', sa.Column('orderId', sa.Integer(), nullable=True))
+    op.add_column('mai2_item_favorite', sa.Column('orderId', sa.Integer(), nullable=True))
 
 
 def downgrade():
