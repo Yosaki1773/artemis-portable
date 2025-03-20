@@ -111,6 +111,8 @@ character = Table(
     Column("imagePath3", String(255)),
     Column("isEnabled", Boolean, server_default="1"),
     Column("defaultHave", Boolean, server_default="0"),
+    Column("illustrator", String(255)),
+    Column("addImages", JSON),
     UniqueConstraint("version", "characterId", name="chuni_static_character_uk"),
     mysql_charset="utf8mb4",
 )
@@ -409,9 +411,13 @@ class ChuniStaticData(BaseData):
 
     async def get_enabled_events(self, version: int) -> Optional[List[Row]]:
         sql = select(events).where(
-            and_(events.c.version == version, events.c.enabled == True,or_(events.c.type == 3,events.c.type == 6))
+            and_(
+                events.c.version == version,
+                events.c.enabled == True,
+                or_(events.c.type == 3, events.c.type == 6),
+            )
         )
-       
+
         result = await self.execute(sql)
         if result is None:
             return None
@@ -543,7 +549,6 @@ class ChuniStaticData(BaseData):
             return None
         return result.fetchone()
 
-
     async def put_avatar(
         self,
         version: int,
@@ -554,7 +559,7 @@ class ChuniStaticData(BaseData):
         texturePath: str,
         isEnabled: int,
         defaultHave: int,
-        sortName: str
+        sortName: str,
     ) -> Optional[int]:
         sql = insert(avatar).values(
             version=version,
@@ -565,7 +570,7 @@ class ChuniStaticData(BaseData):
             texturePath=texturePath,
             isEnabled=isEnabled,
             defaultHave=defaultHave,
-            sortName=sortName
+            sortName=sortName,
         )
 
         conflict = sql.on_duplicate_key_update(
@@ -575,7 +580,7 @@ class ChuniStaticData(BaseData):
             texturePath=texturePath,
             isEnabled=isEnabled,
             defaultHave=defaultHave,
-            sortName=sortName
+            sortName=sortName,
         )
 
         result = await self.execute(conflict)
@@ -583,11 +588,25 @@ class ChuniStaticData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_avatar_items(self, version: int, category: int, enabled_only: bool = True) -> Optional[List[Dict]]:
+    async def get_avatar_items(
+        self, version: int, category: int, enabled_only: bool = True
+    ) -> Optional[List[Dict]]:
         if enabled_only:
-            sql = select(avatar).where((avatar.c.version == version) & (avatar.c.category == category) & (avatar.c.isEnabled)).order_by(avatar.c.sortName)
+            sql = (
+                select(avatar)
+                .where(
+                    (avatar.c.version == version)
+                    & (avatar.c.category == category)
+                    & (avatar.c.isEnabled)
+                )
+                .order_by(avatar.c.sortName)
+            )
         else:
-            sql = select(avatar).where((avatar.c.version == version) & (avatar.c.category == category)).order_by(avatar.c.sortName)
+            sql = (
+                select(avatar)
+                .where((avatar.c.version == version) & (avatar.c.category == category))
+                .order_by(avatar.c.sortName)
+            )
         result = await self.execute(sql)
 
         if result is None:
@@ -602,7 +621,7 @@ class ChuniStaticData(BaseData):
         texturePath: str,
         isEnabled: int,
         defaultHave: int,
-        sortName: str
+        sortName: str,
     ) -> Optional[int]:
         sql = insert(nameplate).values(
             version=version,
@@ -611,7 +630,7 @@ class ChuniStaticData(BaseData):
             texturePath=texturePath,
             isEnabled=isEnabled,
             defaultHave=defaultHave,
-            sortName=sortName
+            sortName=sortName,
         )
 
         conflict = sql.on_duplicate_key_update(
@@ -619,7 +638,7 @@ class ChuniStaticData(BaseData):
             texturePath=texturePath,
             isEnabled=isEnabled,
             defaultHave=defaultHave,
-            sortName=sortName
+            sortName=sortName,
         )
 
         result = await self.execute(conflict)
@@ -627,11 +646,21 @@ class ChuniStaticData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_nameplates(self, version: int, enabled_only: bool = True) -> Optional[List[Dict]]:
+    async def get_nameplates(
+        self, version: int, enabled_only: bool = True
+    ) -> Optional[List[Dict]]:
         if enabled_only:
-            sql = select(nameplate).where((nameplate.c.version == version) & (nameplate.c.isEnabled)).order_by(nameplate.c.sortName)
+            sql = (
+                select(nameplate)
+                .where((nameplate.c.version == version) & (nameplate.c.isEnabled))
+                .order_by(nameplate.c.sortName)
+            )
         else:
-            sql = select(nameplate).where(nameplate.c.version == version).order_by(nameplate.c.sortName)
+            sql = (
+                select(nameplate)
+                .where(nameplate.c.version == version)
+                .order_by(nameplate.c.sortName)
+            )
         result = await self.execute(sql)
 
         if result is None:
@@ -653,14 +682,11 @@ class ChuniStaticData(BaseData):
             name=name,
             rareType=rareType,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
         )
 
         conflict = sql.on_duplicate_key_update(
-            name=name,
-            rareType=rareType,
-            isEnabled=isEnabled,
-            defaultHave=defaultHave
+            name=name, rareType=rareType, isEnabled=isEnabled, defaultHave=defaultHave
         )
 
         result = await self.execute(conflict)
@@ -668,11 +694,21 @@ class ChuniStaticData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_trophies(self, version: int, enabled_only: bool = True) -> Optional[List[Dict]]:
+    async def get_trophies(
+        self, version: int, enabled_only: bool = True
+    ) -> Optional[List[Dict]]:
         if enabled_only:
-            sql = select(trophy).where((trophy.c.version == version) & (trophy.c.isEnabled)).order_by(trophy.c.name)
+            sql = (
+                select(trophy)
+                .where((trophy.c.version == version) & (trophy.c.isEnabled))
+                .order_by(trophy.c.name)
+            )
         else:
-            sql = select(trophy).where(trophy.c.version == version).order_by(trophy.c.name)
+            sql = (
+                select(trophy)
+                .where(trophy.c.version == version)
+                .order_by(trophy.c.name)
+            )
         result = await self.execute(sql)
 
         if result is None:
@@ -696,7 +732,7 @@ class ChuniStaticData(BaseData):
             sortName=sortName,
             iconPath=iconPath,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
         )
 
         conflict = sql.on_duplicate_key_update(
@@ -704,7 +740,7 @@ class ChuniStaticData(BaseData):
             sortName=sortName,
             iconPath=iconPath,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
         )
 
         result = await self.execute(conflict)
@@ -712,11 +748,21 @@ class ChuniStaticData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_map_icons(self, version: int, enabled_only: bool = True) -> Optional[List[Dict]]:
+    async def get_map_icons(
+        self, version: int, enabled_only: bool = True
+    ) -> Optional[List[Dict]]:
         if enabled_only:
-            sql = select(map_icon).where((map_icon.c.version == version) & (map_icon.c.isEnabled)).order_by(map_icon.c.sortName)
+            sql = (
+                select(map_icon)
+                .where((map_icon.c.version == version) & (map_icon.c.isEnabled))
+                .order_by(map_icon.c.sortName)
+            )
         else:
-            sql = select(map_icon).where(map_icon.c.version == version).order_by(map_icon.c.sortName)
+            sql = (
+                select(map_icon)
+                .where(map_icon.c.version == version)
+                .order_by(map_icon.c.sortName)
+            )
         result = await self.execute(sql)
 
         if result is None:
@@ -740,7 +786,7 @@ class ChuniStaticData(BaseData):
             sortName=sortName,
             imagePath=imagePath,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
         )
 
         conflict = sql.on_duplicate_key_update(
@@ -748,7 +794,7 @@ class ChuniStaticData(BaseData):
             sortName=sortName,
             imagePath=imagePath,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
         )
 
         result = await self.execute(conflict)
@@ -756,11 +802,21 @@ class ChuniStaticData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_system_voices(self, version: int, enabled_only: bool = True) -> Optional[List[Dict]]:
+    async def get_system_voices(
+        self, version: int, enabled_only: bool = True
+    ) -> Optional[List[Dict]]:
         if enabled_only:
-            sql = select(system_voice).where((system_voice.c.version == version) & (system_voice.c.isEnabled)).order_by(system_voice.c.sortName)
+            sql = (
+                select(system_voice)
+                .where((system_voice.c.version == version) & (system_voice.c.isEnabled))
+                .order_by(system_voice.c.sortName)
+            )
         else:
-            sql = select(system_voice).where(system_voice.c.version == version).order_by(system_voice.c.sortName)
+            sql = (
+                select(system_voice)
+                .where(system_voice.c.version == version)
+                .order_by(system_voice.c.sortName)
+            )
         result = await self.execute(sql)
 
         if result is None:
@@ -779,7 +835,9 @@ class ChuniStaticData(BaseData):
         imagePath2: str,
         imagePath3: str,
         isEnabled: int,
-        defaultHave: int
+        defaultHave: int,
+        illustrator: str,
+        additional_images: list,
     ) -> Optional[int]:
         sql = insert(character).values(
             version=version,
@@ -792,7 +850,9 @@ class ChuniStaticData(BaseData):
             imagePath2=imagePath2,
             imagePath3=imagePath3,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
+            illustrator=illustrator,
+            addImages=additional_images,
         )
 
         conflict = sql.on_duplicate_key_update(
@@ -804,7 +864,9 @@ class ChuniStaticData(BaseData):
             imagePath2=imagePath2,
             imagePath3=imagePath3,
             isEnabled=isEnabled,
-            defaultHave=defaultHave
+            defaultHave=defaultHave,
+            illustrator=illustrator,
+            addImages=additional_images,
         )
 
         result = await self.execute(conflict)
@@ -812,11 +874,21 @@ class ChuniStaticData(BaseData):
             return None
         return result.lastrowid
 
-    async def get_characters(self, version: int, enabled_only: bool = True) -> Optional[List[Dict]]:
+    async def get_characters(
+        self, version: int, enabled_only: bool = True
+    ) -> Optional[List[Dict]]:
         if enabled_only:
-            sql = select(character).where((character.c.version == version) & (character.c.isEnabled)).order_by(character.c.sortName)
+            sql = (
+                select(character)
+                .where((character.c.version == version) & (character.c.isEnabled))
+                .order_by(character.c.sortName)
+            )
         else:
-            sql = select(character).where(character.c.version == version).order_by(character.c.sortName)
+            sql = (
+                select(character)
+                .where(character.c.version == version)
+                .order_by(character.c.sortName)
+            )
         result = await self.execute(sql)
 
         if result is None:

@@ -37,7 +37,7 @@ class ChuniReader(BaseReader):
 
         if self.opt_dir is not None:
             data_dirs += self.get_data_directories(self.opt_dir)
-        
+
         we_diff = "4"
         if self.version >= ChuniConstants.VER_CHUNITHM_NEW:
             we_diff = "5"
@@ -65,15 +65,23 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(f"{root_dir}loginBonusPreset"):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/LoginBonusPreset.xml"):
-                    with open(f"{root}/{dir}/LoginBonusPreset.xml", "r", encoding="utf-8") as fp:
+                    with open(
+                        f"{root}/{dir}/LoginBonusPreset.xml", "r", encoding="utf-8"
+                    ) as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
                     for name in xml_root.findall("name"):
                         id = name.find("id").text
                         name = name.find("str").text
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
 
                     result = await self.data.static.put_login_bonus_preset(
                         self.version, id, name, is_enabled
@@ -161,7 +169,7 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(music_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/Music.xml"):
-                    with open(f"{root}/{dir}/Music.xml", "r", encoding='utf-8') as fp:
+                    with open(f"{root}/{dir}/Music.xml", "r", encoding="utf-8") as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -169,13 +177,17 @@ class ChuniReader(BaseReader):
                         song_id = name.find("id").text
                         title = name.find("str").text
                         if len(title) > max_title_len:
-                            self.logger.warning(f"Truncating music {song_id} song title")
+                            self.logger.warning(
+                                f"Truncating music {song_id} song title"
+                            )
                             title = title[:max_title_len]
 
                     for artistName in xml_root.findall("artistName"):
                         artist = artistName.find("str").text
                         if len(artist) > max_artist_len:
-                            self.logger.warning(f"Truncating music {song_id} artist name")
+                            self.logger.warning(
+                                f"Truncating music {song_id} artist name"
+                            )
                             artist = artist[:max_artist_len]
 
                     for genreNames in xml_root.findall("genreNames"):
@@ -186,7 +198,9 @@ class ChuniReader(BaseReader):
                     for jaketFile in xml_root.findall("jaketFile"):  # nice typo, SEGA
                         jacket_path = jaketFile.find("path").text
                         # Save off image for use in frontend
-                        self.copy_image(jacket_path, f"{root}/{dir}", "titles/chuni/img/jacket/")
+                        self.copy_image(
+                            jacket_path, f"{root}/{dir}", "titles/chuni/img/jacket/"
+                        )
 
                     for fumens in xml_root.findall("fumens"):
                         for MusicFumenData in fumens.findall("MusicFumenData"):
@@ -196,7 +210,9 @@ class ChuniReader(BaseReader):
                                 chart_type = MusicFumenData.find("type")
                                 chart_id = chart_type.find("id").text
                                 chart_diff = chart_type.find("str").text
-                                if chart_diff == "WorldsEnd" and chart_id == we_diff: # 4 in SDBT, 5 in SDHD
+                                if (
+                                    chart_diff == "WorldsEnd" and chart_id == we_diff
+                                ):  # 4 in SDBT, 5 in SDHD
                                     level = float(xml_root.find("starDifType").text)
                                     we_chara = (
                                         xml_root.find("worldsEndTagName")
@@ -234,7 +250,9 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(charge_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/ChargeItem.xml"):
-                    with open(f"{root}/{dir}/ChargeItem.xml", "r", encoding='utf-8') as fp:
+                    with open(
+                        f"{root}/{dir}/ChargeItem.xml", "r", encoding="utf-8"
+                    ) as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -263,7 +281,9 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(avatar_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/AvatarAccessory.xml"):
-                    with open(f"{root}/{dir}/AvatarAccessory.xml", "r", encoding='utf-8') as fp:
+                    with open(
+                        f"{root}/{dir}/AvatarAccessory.xml", "r", encoding="utf-8"
+                    ) as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -272,19 +292,37 @@ class ChuniReader(BaseReader):
                         name = name.find("str").text
                     sortName = xml_root.find("sortName").text
                     category = xml_root.find("category").text
-                    defaultHave = xml_root.find("defaultHave").text == 'true'
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
-                    
+                    defaultHave = xml_root.find("defaultHave").text == "true"
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
+
                     for image in xml_root.findall("image"):
                         iconPath = image.find("path").text
-                        self.copy_image(iconPath, f"{root}/{dir}", "titles/chuni/img/avatar/")
+                        self.copy_image(
+                            iconPath, f"{root}/{dir}", "titles/chuni/img/avatar/"
+                        )
                     for texture in xml_root.findall("texture"):
                         texturePath = texture.find("path").text
-                        self.copy_image(texturePath, f"{root}/{dir}", "titles/chuni/img/avatar/")
+                        self.copy_image(
+                            texturePath, f"{root}/{dir}", "titles/chuni/img/avatar/"
+                        )
 
                     result = await self.data.static.put_avatar(
-                        self.version, id, name, category, iconPath, texturePath, is_enabled, defaultHave, sortName
+                        self.version,
+                        id,
+                        name,
+                        category,
+                        iconPath,
+                        texturePath,
+                        is_enabled,
+                        defaultHave,
+                        sortName,
                     )
 
                     if result is not None:
@@ -296,7 +334,9 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(nameplate_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/NamePlate.xml"):
-                    with open(f"{root}/{dir}/NamePlate.xml", "r", encoding='utf-8') as fp:
+                    with open(
+                        f"{root}/{dir}/NamePlate.xml", "r", encoding="utf-8"
+                    ) as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -304,16 +344,30 @@ class ChuniReader(BaseReader):
                         id = name.find("id").text
                         name = name.find("str").text
                     sortName = xml_root.find("sortName").text
-                    defaultHave = xml_root.find("defaultHave").text == 'true'
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
-                    
+                    defaultHave = xml_root.find("defaultHave").text == "true"
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
+
                     for image in xml_root.findall("image"):
                         texturePath = image.find("path").text
-                        self.copy_image(texturePath, f"{root}/{dir}", "titles/chuni/img/nameplate/")
+                        self.copy_image(
+                            texturePath, f"{root}/{dir}", "titles/chuni/img/nameplate/"
+                        )
 
                     result = await self.data.static.put_nameplate(
-                        self.version, id, name, texturePath, is_enabled, defaultHave, sortName
+                        self.version,
+                        id,
+                        name,
+                        texturePath,
+                        is_enabled,
+                        defaultHave,
+                        sortName,
                     )
 
                     if result is not None:
@@ -325,7 +379,7 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(trophy_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/Trophy.xml"):
-                    with open(f"{root}/{dir}/Trophy.xml", "r", encoding='utf-8') as fp:
+                    with open(f"{root}/{dir}/Trophy.xml", "r", encoding="utf-8") as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -333,9 +387,15 @@ class ChuniReader(BaseReader):
                         id = name.find("id").text
                         name = name.find("str").text
                     rareType = xml_root.find("rareType").text
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
-                    defaultHave = xml_root.find("defaultHave").text == 'true'
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
+                    defaultHave = xml_root.find("defaultHave").text == "true"
 
                     result = await self.data.static.put_trophy(
                         self.version, id, name, rareType, is_enabled, defaultHave
@@ -350,7 +410,7 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(chara_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/Chara.xml"):
-                    with open(f"{root}/{dir}/Chara.xml", "r", encoding='utf-8') as fp:
+                    with open(f"{root}/{dir}/Chara.xml", "r", encoding="utf-8") as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -360,11 +420,19 @@ class ChuniReader(BaseReader):
                     sortName = xml_root.find("sortName").text
                     for work in xml_root.findall("works"):
                         worksName = work.find("str").text
+                    for illustratorName in xml_root.findall("illustratorName"):
+                        illustrator = illustratorName.find("str").text
                     rareType = xml_root.find("rareType").text
-                    defaultHave = xml_root.find("defaultHave").text == 'true'
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
-                    
+                    defaultHave = xml_root.find("defaultHave").text == "true"
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
+
                     # character images are not stored alongside
                     for image in xml_root.findall("defaultImages"):
                         imageKey = image.find("str").text
@@ -373,28 +441,49 @@ class ChuniReader(BaseReader):
                         imagePath1 = imagePaths[0] if len(imagePaths) > 0 else ""
                         imagePath2 = imagePaths[1] if len(imagePaths) > 1 else ""
                         imagePath3 = imagePaths[2] if len(imagePaths) > 2 else ""
-                        # @note the third image is the image needed for the user box ui
-                        if imagePath3:
-                            self.copy_image(imagePath3, imageDir, "titles/chuni/img/character/")
-                        else:
-                            self.logger.warning(f"Character {id} only has {len(imagePaths)} images. Expected 3")                        
                     else:
                         self.logger.warning(f"Unable to location character {id} images")
 
+                    additional_images = None
+                    for i in range(1, 10):
+                        add_img_tag = f"addImages{i}"
+                        for add_img in xml_root.findall(add_img_tag):
+                            if add_img.find("changeImg").text == "true":
+                                if additional_images is None:
+                                    additional_images = []
+                                img_data = {
+                                    "id": add_img.find("charaName").find("id").text,
+                                    "name": add_img.find("charaName").find("str").text,
+                                    "image": add_img.find("image").find("str").text,
+                                }
+                                additional_images.append(img_data)
+
                     result = await self.data.static.put_character(
-                        self.version, id, name, sortName, worksName, rareType, imagePath1, imagePath2, imagePath3, is_enabled, defaultHave
+                        self.version,
+                        id,
+                        name,
+                        sortName,
+                        worksName,
+                        rareType,
+                        imagePath1,
+                        imagePath2,
+                        imagePath3,
+                        is_enabled,
+                        defaultHave,
+                        illustrator,
+                        additional_images,
                     )
 
                     if result is not None:
                         self.logger.info(f"Inserted character {id}")
                     else:
                         self.logger.warning(f"Failed to insert character {id}")
-    
+
     async def read_map_icon(self, mapicon_dir: str) -> None:
         for root, dirs, files in walk(mapicon_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/MapIcon.xml"):
-                    with open(f"{root}/{dir}/MapIcon.xml", "r", encoding='utf-8') as fp:
+                    with open(f"{root}/{dir}/MapIcon.xml", "r", encoding="utf-8") as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -404,13 +493,27 @@ class ChuniReader(BaseReader):
                     sortName = xml_root.find("sortName").text
                     for image in xml_root.findall("image"):
                         iconPath = image.find("path").text
-                        self.copy_image(iconPath, f"{root}/{dir}", "titles/chuni/img/mapIcon/")
-                    defaultHave = xml_root.find("defaultHave").text == 'true'
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
+                        self.copy_image(
+                            iconPath, f"{root}/{dir}", "titles/chuni/img/mapIcon/"
+                        )
+                    defaultHave = xml_root.find("defaultHave").text == "true"
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
 
                     result = await self.data.static.put_map_icon(
-                        self.version, id, name, sortName, iconPath, is_enabled, defaultHave
+                        self.version,
+                        id,
+                        name,
+                        sortName,
+                        iconPath,
+                        is_enabled,
+                        defaultHave,
                     )
 
                     if result is not None:
@@ -422,7 +525,9 @@ class ChuniReader(BaseReader):
         for root, dirs, files in walk(voice_dir):
             for dir in dirs:
                 if path.exists(f"{root}/{dir}/SystemVoice.xml"):
-                    with open(f"{root}/{dir}/SystemVoice.xml", "r", encoding='utf-8') as fp:
+                    with open(
+                        f"{root}/{dir}/SystemVoice.xml", "r", encoding="utf-8"
+                    ) as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
@@ -432,13 +537,27 @@ class ChuniReader(BaseReader):
                     sortName = xml_root.find("sortName").text
                     for image in xml_root.findall("image"):
                         imagePath = image.find("path").text
-                        self.copy_image(imagePath, f"{root}/{dir}", "titles/chuni/img/systemVoice/")
-                    defaultHave = xml_root.find("defaultHave").text == 'true'
-                    disableFlag = xml_root.find("disableFlag") # may not exist in older data
-                    is_enabled = True if (disableFlag is None or disableFlag.text == "false") else False
-                    
+                        self.copy_image(
+                            imagePath, f"{root}/{dir}", "titles/chuni/img/systemVoice/"
+                        )
+                    defaultHave = xml_root.find("defaultHave").text == "true"
+                    disableFlag = xml_root.find(
+                        "disableFlag"
+                    )  # may not exist in older data
+                    is_enabled = (
+                        True
+                        if (disableFlag is None or disableFlag.text == "false")
+                        else False
+                    )
+
                     result = await self.data.static.put_system_voice(
-                        self.version, id, name, sortName, imagePath, is_enabled, defaultHave
+                        self.version,
+                        id,
+                        name,
+                        sortName,
+                        imagePath,
+                        is_enabled,
+                        defaultHave,
                     )
 
                     if result is not None:
@@ -464,7 +583,7 @@ class ChuniReader(BaseReader):
             for dir in dirs:
                 directory = f"{root}/{dir}"
                 if path.exists(f"{directory}/DDSImage.xml"):
-                    with open(f"{directory}/DDSImage.xml", "r", encoding='utf-8') as fp:
+                    with open(f"{directory}/DDSImage.xml", "r", encoding="utf-8") as fp:
                         strdata = fp.read()
 
                     xml_root = ET.fromstring(strdata)
