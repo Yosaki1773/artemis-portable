@@ -452,7 +452,9 @@ class ChuniReader(BaseReader):
                                 if additional_images is None:
                                     additional_images = []
                                 img_data = {
-                                    "id": add_img.find("charaName").find("id").text,
+                                    "id": int(
+                                        add_img.find("charaName").find("id").text
+                                    ),
                                     "name": add_img.find("charaName")
                                     .find("str")
                                     .text.encode("utf-8")
