@@ -453,7 +453,10 @@ class ChuniReader(BaseReader):
                                     additional_images = []
                                 img_data = {
                                     "id": add_img.find("charaName").find("id").text,
-                                    "name": add_img.find("charaName").find("str").text,
+                                    "name": add_img.find("charaName")
+                                    .find("str")
+                                    .text.encode("utf-8")
+                                    .decode("utf-8"),
                                     "image": add_img.find("image").find("str").text,
                                 }
                                 additional_images.append(img_data)
