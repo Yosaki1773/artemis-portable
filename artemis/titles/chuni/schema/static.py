@@ -17,6 +17,8 @@ from sqlalchemy.dialects.mysql import insert
 from datetime import datetime
 
 from core.data.schema import BaseData, metadata
+from item import item
+from titles.chuni.const import ItemKind
 
 events = Table(
     "chuni_static_events",
@@ -1000,3 +1002,27 @@ class ChuniStaticData(BaseData):
         if result is None:
             return None
         return result.fetchone()
+
+    async def enable_ultima(self, version: int, song_id: int) -> Optional[Dict]:
+        sql = insert(item).values({
+            "user":1,
+            "itemId":song_id,
+            "itemKind":ItemKind.ULTIMA_UNLOCK,
+            "stock":1,
+            "isValid":1
+        })
+        song = music.select(
+            and_(
+                music.c.version >= version - 1,
+                music.c.songId == song_id,
+                music.c.chartId == 4
+            )
+        ).order_by(music.c.version).limit(1).execute().fetchone()
+        
+        result = None
+        if song is None or song.level == 0:
+            result = await self.execute(sql)
+            
+        if result is None:
+            return None
+        return result.fetchall()

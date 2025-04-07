@@ -202,6 +202,17 @@ class ChuniReader(BaseReader):
                             jacket_path, f"{root}/{dir}", "titles/chuni/img/jacket/"
                         )
 
+                    enable_ultima = xml_root.find("enableUltima").text
+                    if enable_ultima == "true":
+                        result = await self.data.static.enable_ultima(
+                            self.version,
+                            song_id,
+                        )
+                        if result is not None:
+                            self.logger.info(
+                                f"enable Ultima {song_id} {title}"
+                            )
+
                     for fumens in xml_root.findall("fumens"):
                         for MusicFumenData in fumens.findall("MusicFumenData"):
                             fumen_path = MusicFumenData.find("file").find("path")
@@ -571,6 +582,7 @@ class ChuniReader(BaseReader):
                         self.logger.warning(f"Failed to system voice {id}")
 
     def copy_image(self, filename: str, src_dir: str, dst_dir: str) -> None:
+        return
         # Convert the image to png so we can easily display it in the frontend
         file_src = path.join(src_dir, filename)
         (basename, ext) = path.splitext(filename)
