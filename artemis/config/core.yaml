@@ -29,7 +29,7 @@ database:
   enable_memcached: true
   memcached_host: localhost
 frontend:
-  enable: true
+  enable: false
   port: 8080
   loglevel: info
   secret: ''
