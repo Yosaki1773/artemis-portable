@@ -209,7 +209,7 @@ class ChuniReader(BaseReader):
                             song_id,
                         )
                         if result is not None:
-                            self.logger.info(
+                            self.logger.debug(
                                 f"enable Ultima {song_id} {title}"
                             )
 

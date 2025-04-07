@@ -17,7 +17,7 @@ from sqlalchemy.dialects.mysql import insert
 from datetime import datetime
 
 from core.data.schema import BaseData, metadata
-from item import item
+from titles.chuni.schema.item import item
 from titles.chuni.const import ItemKind
 
 events = Table(
@@ -1004,25 +1004,35 @@ class ChuniStaticData(BaseData):
         return result.fetchone()
 
     async def enable_ultima(self, version: int, song_id: int) -> Optional[Dict]:
-        sql = insert(item).values({
-            "user":1,
-            "itemId":song_id,
-            "itemKind":ItemKind.ULTIMA_UNLOCK,
-            "stock":1,
-            "isValid":1
-        })
-        song = music.select(
-            and_(
-                music.c.version >= version - 1,
-                music.c.songId == song_id,
-                music.c.chartId == 4
+        sql = (
+            insert(item)
+            .values(
+                {
+                    "user": 1,
+                    "itemId": song_id,
+                    "itemKind": ItemKind.ULTIMA_UNLOCK,
+                    "stock": 1,
+                    "isValid": 1,
+                }
             )
-        ).order_by(music.c.version).limit(1).execute().fetchone()
-        
+            .on_duplicate_key_update(itemId=song_id)
+        )
+        sql_song = (
+            select(music)
+            .where(
+                (music.c.version >= version - 1)
+                & (music.c.songId == song_id)
+                & (music.c.chartId == 4)
+            )
+            .order_by(music.c.version.desc())
+            .limit(1)
+        )
+        songs = await self.execute(sql_song)
+        song = songs.fetchone()
+        if song is not None:
+            song = dict(song._mapping)
         result = None
-        if song is None or song.level == 0:
+        if song is None or song.get("level", 0) == 0.0:
             result = await self.execute(sql)
-            
-        if result is None:
-            return None
-        return result.fetchall()
+
+        return result
